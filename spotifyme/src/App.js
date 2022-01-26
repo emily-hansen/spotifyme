@@ -8,10 +8,12 @@ import {
 } from "react-router-dom";
 
 function App() {
+	// Test for useNavigate
 	const Test = () => {
 		const navigator = useNavigate();
 		return <button onClick={() => navigator("/homepage")}>To HomePage</button>;
 	};
+
 	return (
 		/** How to use the router:
 		 * For a new page, add a new <Route/> component.
@@ -24,7 +26,6 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Test />} />
 				<Route path="homepage" element={<HomePage />} />
-				<Route path="test" element={<div>test</div>} />
 			</Routes>
 		</Router>
 	);

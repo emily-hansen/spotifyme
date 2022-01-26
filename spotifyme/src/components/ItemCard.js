@@ -1,5 +1,6 @@
 import { Card, styled } from "@mui/material";
 
+// Basic styling for the card
 export const ItemCard = styled(Card)(({ theme }) => ({
 	backgroundColor: "#000",
 	borderRadius: "10px",
@@ -11,6 +12,15 @@ export const ItemCard = styled(Card)(({ theme }) => ({
 	},
 }));
 
+/**
+ * Component takes in props:
+ * @param {string} head - The title of the card
+ * @param {string} text - The body of the card
+ * @param {string} image - The image of the card (Not implemented)
+ * @param {string} link - The link of the card (Not implemented)
+ * @param {string} linkText - The text of the link (Not implemented)
+ * @example <ICard head="Test" text="This is a test">{children}</ICard>
+ */
 export default function ICard(props) {
 	return (
 		<ItemCard style={props.style}>

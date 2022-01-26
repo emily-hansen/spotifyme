@@ -9,6 +9,7 @@ export default function HomePage() {
 	const navigator = useNavigate();
 	return (
 		<Background>
+			{/* div is the header for the page */}
 			<div
 				style={{
 					backgroundColor: "#000",
@@ -57,6 +58,7 @@ export default function HomePage() {
 					</ColorButton>
 				</Stack>
 			</div>
+			{/* Stack is the different playlist types */}
 			<Stack
 				direction="column"
 				spacing={2}

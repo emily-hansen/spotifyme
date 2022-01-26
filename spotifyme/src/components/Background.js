@@ -1,6 +1,10 @@
 import React from "react";
 import { spotifyGreen } from "./Button";
 
+/**
+ * Background component for the pages.
+ * @param {object} style - The style of the component
+ */
 export default function Background(props) {
 	return (
 		<div
