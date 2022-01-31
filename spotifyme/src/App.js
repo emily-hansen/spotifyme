@@ -1,4 +1,8 @@
-import HomePage from "./components/HomePage";
+import HomePage from "./components/pages/HomePage";
+import TimePage from "./components/pages/TimePage";
+import FeaturePage from "./components/pages/FeaturePage";
+import StatPage from "./components/pages/StatPage";
+import PlaylistPage from "./components/pages/PlaylistPage";
 
 import {
 	BrowserRouter as Router,
@@ -26,6 +30,10 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Test />} />
 				<Route path="homepage" element={<HomePage />} />
+				<Route path="timepage" element={<TimePage />} />
+				<Route path="featurepage" element={<FeaturePage />} />
+				<Route path="statpage" element={<StatPage />} />
+				<Route path="playlistpage" element={<PlaylistPage />} />
 			</Routes>
 		</Router>
 	);
