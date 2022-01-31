@@ -5,8 +5,6 @@ import FeaturePage from "./components/pages/FeaturePage";
 import StatPage from "./components/pages/StatPage";
 import PlaylistPage from "./components/pages/PlaylistPage";
 import { getCredentials } from './containers/AuthenticationContainer/CredentialsProvider';
-
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,6 +12,8 @@ import {
   useNavigate,
   useLinkClickHandler,
 } from 'react-router-dom';
+
+import DataGridDemo from './components/PlaylistDisplay';
 
 function App() {
   const credentials = getCredentials();
