@@ -1,11 +1,24 @@
 import React from "react";
 import GeneralPage from "./GeneralPage";
-
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+
+//temporary item card 
+import { Card, styled } from "@mui/material";
+export const ItemCard = styled(Card)(() => ({
+	backgroundColor: "#000",
+	borderRadius: "10px",
+	boxShadow: "0px 0px 10px #000",
+	padding: "50px",
+	color: "#fff", 
+	
+	width: "50%", 
+	transform: "translate(50%, 10%)"
+}));
+
 
 export default function TimePage() {
 
@@ -30,29 +43,33 @@ export default function TimePage() {
 		<GeneralPage link="/homepage">
 			<h1>Time Page</h1>
 
-			<Box sx={{ minWidth: 120 }}>
-      			<FormControl fullWidth>
+
+			<ItemCard>
+				<Box sx={{}} >
+      			<FormControl sx={{ minWidth: 120, maxWidth: 300}}>
         			<InputLabel>Hours</InputLabel>
         			<Select
           				value={hours}
-          				
+          				label="Hours"
           				onChange={handleChangeH}
+						sx={{backgroundColor: "white"}}
         			>
-          				<MenuItem value={1}>1</MenuItem>
+          				<MenuItem value={0}>0</MenuItem>
+						<MenuItem value={1}>1</MenuItem>
           				<MenuItem value={2}>2</MenuItem>
           				<MenuItem value={3}>3</MenuItem>
         			</Select>
       			</FormControl>
-    		</Box>
-
-			<Box sx={{ minWidth: 120 }}>
-      			<FormControl fullWidth>
+    		
+      			<FormControl sx={{ minWidth: 120, maxWidth: 300}}>
         			<InputLabel>Minuites</InputLabel>
         			<Select
           				value={minutes}
           				label="Minutes"
           				onChange={handleChangeM}
+						sx={{backgroundColor: "white"}}
         			>
+						<MenuItem value={0}>0</MenuItem>
           				<MenuItem value={5}>5</MenuItem>
           				<MenuItem value={10}>10</MenuItem>
           				<MenuItem value={15}>15</MenuItem>
@@ -67,7 +84,7 @@ export default function TimePage() {
         			</Select>
       			</FormControl>
     		</Box>
-
+			</ItemCard>
 		</GeneralPage>
 	);
 }
