@@ -95,7 +95,7 @@ export default function TimePage() {
 					fontSize: "20px",
 					textTransform: "capitalize",
 				}}
-				onClick={() => navigator("/homepage")}>
+				onClick={() => navigator("/playlistpage")}>
 				Create Playlist
 			</ColorButton>
 
