@@ -5,9 +5,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import { ColorButton} from "../Button";
 //temporary item card 
 import { Card, styled } from "@mui/material";
+
 export const ItemCard = styled(Card)(() => ({
 	backgroundColor: "#000",
 	borderRadius: "10px",
@@ -16,36 +17,37 @@ export const ItemCard = styled(Card)(() => ({
 	color: "#fff", 
 	
 	width: "50%", 
-	transform: "translate(50%, 10%)"
+	margin: "auto",
+	marginTop: "10%"
 }));
 
 
 export default function TimePage() {
 
 	const [hours, setHours] = React.useState('');
-
 	const [minutes, setMinutes] = React.useState('');
-
 	const handleChangeH = (event) => {
 	  setHours(event.target.value);
-	  
 	};
 	const handleChangeM = (event) => {
-		
 		setMinutes(event.target.value);
 	  };
 
 	
-
-	
-
 	return (
 		<GeneralPage link="/homepage">
-			<h1>Time Page</h1>
 
 
 			<ItemCard>
-				<Box sx={{}} >
+			
+					<p
+						style={{
+							color: "#888", fontSize: "35px", marginBottom: "20px", marginTop: "0px"
+						}}>
+						{"Make a playlist that runs for a given time based on your recently listened."}
+					</p>
+				
+				<Box>
       			<FormControl sx={{ minWidth: 120, maxWidth: 300}}>
         			<InputLabel>Hours</InputLabel>
         			<Select
@@ -84,6 +86,19 @@ export default function TimePage() {
         			</Select>
       			</FormControl>
     		</Box>
+
+			<ColorButton
+				style={{
+					marginTop: "20px",
+					paddingLeft: "30px",
+					paddingRight: "30px",
+					fontSize: "20px",
+					textTransform: "capitalize",
+				}}
+				onClick={() => navigator("/homepage")}>
+				Create Playlist
+			</ColorButton>
+
 			</ItemCard>
 		</GeneralPage>
 	);
