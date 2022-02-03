@@ -27,9 +27,9 @@ export const ItemCard = styled(Card)((props) =>
  * @example <ICard head="Test" text="This is a test">{children}</ICard>
  * @param {string} head - The title of the card
  * @param {string} text - The body of the card
- * @param {string} image - The image of the card (Not implemented)
  * @param {string} link - The link of the card
  * @param {string} nohome - If the card is not a home page card
+ * @param {JSX.Element} icon - The mui icon of the card
  */
 export default function ICard(props) {
 	const navigator = useNavigate();
