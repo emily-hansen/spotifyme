@@ -3,11 +3,12 @@ import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
 import { Stack, Typography, TextField, MenuItem } from "@mui/material";
 import { ColorButton } from "../Button";
+import { useNavigate } from "react-router-dom";
 
 
 export default function TimePage() {
 
-	
+	const navigator = useNavigate();
 	return (
 		<GeneralPage link="/homepage">
 			<div
@@ -44,7 +45,8 @@ export default function TimePage() {
 								/>
 						</Stack>
 					</ICard>
-					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}>
+					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}
+						onClick={() => navigator("/playlistpage")}>
 						Create Playlist
 					</ColorButton>
 				</Stack>
