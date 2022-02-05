@@ -1,4 +1,5 @@
 import HomePage from "./components/pages/HomePage";
+import HeroPage from "./components/pages/HeroPage";
 import TimePage from "./components/pages/TimePage";
 import FeaturePage from "./components/pages/FeaturePage";
 import StatPage from "./components/pages/StatPage";
@@ -28,7 +29,7 @@ function App() {
 		 * */
 		<Router>
 			<Routes>
-				<Route path="/" element={<Test />} />
+				<Route path="/" element={<HeroPage />} />
 				<Route path="homepage" element={<HomePage />} />
 				<Route path="timepage" element={<TimePage />} />
 				<Route path="featurepage" element={<FeaturePage />} />
