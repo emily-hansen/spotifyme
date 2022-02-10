@@ -1,24 +1,13 @@
 import HomePage from "./components/pages/HomePage";
-import HeroPage from "./components/pages/HeroPage";
+import LandingPage from "./components/pages/LandingPage";
 import TimePage from "./components/pages/TimePage";
 import FeaturePage from "./components/pages/FeaturePage";
 import StatPage from "./components/pages/StatPage";
 import PlaylistPage from "./components/pages/PlaylistPage";
 
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-	// Test for useNavigate
-	const Test = () => {
-		const navigator = useNavigate();
-		return <button onClick={() => navigator("/homepage")}>To HomePage</button>;
-	};
-
 	return (
 		/** How to use the router:
 		 * For a new page, add a new <Route/> component.
@@ -29,7 +18,7 @@ function App() {
 		 * */
 		<Router>
 			<Routes>
-				<Route path="/" element={<HeroPage />} />
+				<Route path="/" element={<LandingPage />} />
 				<Route path="homepage" element={<HomePage />} />
 				<Route path="timepage" element={<TimePage />} />
 				<Route path="featurepage" element={<FeaturePage />} />

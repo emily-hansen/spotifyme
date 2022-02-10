@@ -3,6 +3,7 @@ import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
 import { Stack, Typography, TextField, MenuItem } from "@mui/material";
 import { ColorButton } from "../Button";
+import { useNavigate } from "react-router-dom";
 
 //TODO: Need to format text field so inputs are always HH:MM:SS
 export default function StatPage() {
@@ -14,6 +15,8 @@ export default function StatPage() {
 	 * 4 = Past day
 	 */
 	const [year, setYear] = useState(0);
+
+	const navigator = useNavigate();
 
 	return (
 		<GeneralPage link="/homepage">
@@ -33,7 +36,7 @@ export default function StatPage() {
 						alignItems: "center",
 					}}>
 					<ICard
-						nohome
+						nohome="true"
 						text="Make a playlist based on listening statistics."
 						style={{
 							width: "500px",
@@ -67,7 +70,9 @@ export default function StatPage() {
 							</TextField>
 						</Stack>
 					</ICard>
-					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}>
+					<ColorButton
+						style={{ width: "150px", textTransform: "capitalize" }}
+						onClick={() => navigator("/playlistpage")}>
 						Create Playlist
 					</ColorButton>
 				</Stack>

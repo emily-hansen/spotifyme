@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Avatar, Stack } from "@mui/material";
 import { ColorButton, spotifyGreen, spotifyGreenDark } from "./Button";
 
+//TODO: Need to add functionallity for logging out of spotify
 export default function Header(props) {
 	const navigator = useNavigate();
 	return (
@@ -49,7 +50,8 @@ export default function Header(props) {
 						textTransform: "capitalize",
 						paddingLeft: "20px",
 						paddingRight: "20px",
-					}}>
+					}}
+					onClick={() => navigator("/")}>
 					Sign Out
 				</ColorButton>
 			</Stack>
