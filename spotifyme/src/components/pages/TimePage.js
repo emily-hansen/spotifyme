@@ -3,10 +3,34 @@ import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
 import { Stack, Typography, TextField, MenuItem } from "@mui/material";
 import { ColorButton } from "../Button";
+import  CircleLoader  from "../Loader"
 import { useNavigate } from "react-router-dom";
 
 
 export default function TimePage() {
+
+  const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+  const timer = React.useRef();
+  
+  React.useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+
+  const handleButtonClick = () => {
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = window.setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+		navigator("/playlistpage");
+      }, 2000);
+    }
+  };
+
 
 	const navigator = useNavigate();
 	return (
@@ -46,8 +70,11 @@ export default function TimePage() {
 						</Stack>
 					</ICard>
 					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}
-						onClick={() => navigator("/playlistpage")}>
+						onClick={handleButtonClick}>
 						Create Playlist
+						{loading && (
+							<CircleLoader></CircleLoader>
+						)}
 					</ColorButton>
 				</Stack>
 			</div>
