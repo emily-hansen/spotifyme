@@ -44,7 +44,7 @@ export default function StatPage() {
 						alignItems: "center",
 					}}>
 					<ICard
-						nohome
+						nohome="true"
 						text="Make a playlist based on listening statistics."
 						style={{
 							width: "500px",
