@@ -34,7 +34,7 @@ export default function TimePage() {
 						alignItems: "center",
 					}}>
 					<ICard
-						nohome
+						nohome="true"
 						text="Make a playlist that runs for a given time based on your recently listened."
 						style={{
 							width: "500px",

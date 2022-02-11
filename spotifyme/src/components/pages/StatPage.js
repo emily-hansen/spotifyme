@@ -3,6 +3,7 @@ import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
 import { Stack, Typography, TextField, MenuItem } from "@mui/material";
 import { ColorButton } from "../Button";
+import { useNavigate } from "react-router-dom";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
@@ -12,8 +13,7 @@ const color = "#FFFFFF";
 //TODO: Need to format text field so inputs are always HH:MM:SS
 export default function StatPage() {
 	const [value, setValue] = React.useState(null);
-
-
+	
 	/**
 	 * 0 = All time
 	 * 1 = Past year
@@ -22,6 +22,8 @@ export default function StatPage() {
 	 * 4 = Past day
 	 */
 	const [year, setYear] = useState(0);
+
+	const navigator = useNavigate();
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -88,7 +90,10 @@ export default function StatPage() {
 							</TextField>
 						</Stack>
 					</ICard>
-					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}>
+					<ColorButton 
+					style={{ width: "150px", textTransform: "capitalize" }}
+					onClick={() => navigator("/playlistpage")}
+					>
 						Create Playlist
 					</ColorButton>
 				</Stack>
