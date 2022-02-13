@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
-import { Stack, Typography, TextField, MenuItem } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 import { ColorButton } from "../Button";
 import { useNavigate } from "react-router-dom";
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import TimePicker from '@mui/lab/TimePicker';
 
 const color = "#FFFFFF";
 
 export default function TimePage() {
-
-	const [value, setValue] = React.useState(null);
-
 	const navigator = useNavigate();
+	const [value, setValue] = useState(null);
+
 	return (
-		<LocalizationProvider dateAdapter={AdapterDateFns}>
 		<GeneralPage link="/homepage">
 			<div
 				style={{
@@ -41,36 +36,56 @@ export default function TimePage() {
 							height: "200px",
 							justifyContent: "center",
 						}}>
-						<Stack direction="column" spacing={2} sx={{ alignItems: "center" }}>
-							
-								<TimePicker
-									 ampm={false}
-									 views={['hours', 'minutes']}
-									 inputFormat="00:00"
-									 mask="__:__"
-									 label="Playlist Duration"
-									 value={value}
-									
-									 onChange={(newValue) => {
-									 	setValue(newValue);
-									 }}
-									renderInput={(params) => <TextField 
-										sx={{ 
-											svg: { color },
-											input: { color },
-											label: { color }
-										}}
-										{...params}/>}
-								/>
+						<Stack
+							direction="row"
+							spacing={2}
+							sx={{
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+							}}>
+							<Typography variant="h5" sx={{ color: color }}>
+								Time:
+							</Typography>
+							<TextField
+								sx={{
+									backgroundColor: color,
+									borderRadius: "5px",
+								}}
+								placeholder="00:00:00"
+								value={value}
+								onChange={(e) => {
+									let newValue = e.target.value.replace(/[^0-9]/g, "");
+									if (newValue.length === 3 || newValue.length === 4) {
+										newValue =
+											newValue.substring(0, 2) + ":" + newValue.substring(2);
+									} else if (newValue.length === 5 || newValue.length === 6) {
+										newValue =
+											newValue.substring(0, 2) +
+											":" +
+											newValue.substring(2, 4) +
+											":" +
+											newValue.substring(4);
+									} else if (newValue.length > 6) {
+										newValue =
+											newValue.substring(0, 2) +
+											":" +
+											newValue.substring(2, 4) +
+											":" +
+											newValue.substring(4, 6);
+									}
+									setValue(newValue);
+								}}
+							/>
 						</Stack>
 					</ICard>
-					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}
+					<ColorButton
+						style={{ width: "150px", textTransform: "capitalize" }}
 						onClick={() => navigator("/playlistpage")}>
 						Create Playlist
 					</ColorButton>
 				</Stack>
 			</div>
 		</GeneralPage>
-		</LocalizationProvider>
 	);
 }

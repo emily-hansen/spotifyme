@@ -21,7 +21,7 @@ export default function LandingPage() {
 		let text = document.getElementById("spotify-text");
 		let colorValue = 0x106b30;
 		let shadow = "";
-		for (let i = 0; i < 350; i++) {
+		for (let i = 0; i < 500; i++) {
 			colorValue += 0x004000;
 			shadow +=
 				(shadow ? "," : "") +
