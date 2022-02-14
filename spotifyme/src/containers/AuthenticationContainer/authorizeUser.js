@@ -13,10 +13,6 @@ const AuthorizeUser = () => {
   const [token, setToken] = React.useState(Cookies.get('spotifyAuthToken'));
 
   const navigate = useNavigate();
-  // <Button size="small" onClick={() => this.toggleClickHandler()}>
-  //             {' '}
-  //             View Token (Dev Testing)
-  //           </Button>
 
   const [checked, setChecked] = React.useState(true);
 

@@ -8,6 +8,8 @@ import GeneralPage from './GeneralPage';
 
 import { SpotifyAuthListener } from 'react-spotify-auth';
 import Cookies from 'js-cookie';
+import SpotifyWebApi from 'spotify-web-api-node';
+import { User, SpotifyApiContext } from 'react-spotify-api';
 
 export default function HomePage() {
   const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
@@ -17,9 +19,18 @@ export default function HomePage() {
   //   console.log(token);
   // };
 
+  let spotifyApi = new SpotifyWebApi({
+    accessToken: token,
+  });
+
+  const tokenHandler = (token) => {
+    spotifyApi.setAccessToken(token);
+    setToken(token);
+  };
+
   return (
     <div>
-      <SpotifyAuthListener onAccessToken={(token) => setToken(token)} />
+      <SpotifyAuthListener onAccessToken={(token) => tokenHandler(token)} />
       <GeneralPage link="/">
         {/* Stack is the different playlist types */}
         <Stack

@@ -11,68 +11,93 @@ import Cookies from 'js-cookie';
 import { SpotifyApiContext, TrackAnalysis, useArtist } from 'react-spotify-api';
 import { SpotifyAuth, SpotifyAuthListener, Scopes } from 'react-spotify-auth';
 import { Artist, UserTop, User, useUser } from 'react-spotify-api';
+import SpotifyWebApi from 'spotify-web-api-node';
+import { arrayOf } from 'prop-types';
 
 const color = '#FFFFFF';
 
 export default function TimePage() {
 	const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
 
+  let spotifyApi = new SpotifyWebApi({
+    accessToken: token,
+  });
+
+  const tokenHandler = (token) => {
+    spotifyApi.setAccessToken(token);
+    setToken(token);
+  };
+
   const [value, setValue] = React.useState(null);
 
   const navigator = useNavigate();
 
-  const GetUser = (props) => {
-    const { data } = useUser();
+  // const GetUser = (props) => {
+  //   const { data } = useUser();
 
-    if (data) {
-      return <h1>{data.birthdate}</h1>;
-    }
-    return <h1>Hello</h1>;
-  };
+  //   if (data) {
+  //     return <h1>{data.birthdate}</h1>;
+  //   }
+  //   return <h1>Hello</h1>;
+  // };
 
-  function DisplayShit() {
-    return (
-      <SpotifyApiContext.Provider value={token}>
-        <h1>{GetUser()}</h1>
-      </SpotifyApiContext.Provider>
-    );
-  }
+  // function DisplayShit() {
+  //   return (
+  //     <SpotifyApiContext.Provider value={token}>
+  //       <h1>{GetUser()}</h1>
+  //     </SpotifyApiContext.Provider>
+  //   );
+  // }
 
-  function DisplayUsername() {
-    return (
-      <SpotifyApiContext.Provider value={token}>
-        <User>
-          {(user) =>
-            user && user.data ? (
-              <>
-                <h1>Welcome, {user.data.display_name}</h1>
-              </>
-            ) : (
-              <p>Loading...</p>
-            )
-          }
-        </User>
-      </SpotifyApiContext.Provider>
-    );
-  }
+  // function DisplayUserTopTracks() {
+  //   return (
+  //     <SpotifyApiContext.Provider value={token}>
+  //       <UserTop type="tracks">
+  //         {(tracks) =>
+  //           tracks && tracks.data ? (
+  //             tracks.data.items.map((track, index) => {
+  //               return <p key={`${track.name}`}>{track.name}</p>;
+  //             })
+  //           ) : (
+  //             <p>NO TRACKS RETURNED</p>
+  //           )
+  //         }
+  //       </UserTop>
+  //     </SpotifyApiContext.Provider>
+  //   );
+  // }
 
-  function DisplayUserTopTracks() {
-    return (
-      <SpotifyApiContext.Provider value={token}>
-        <UserTop type="tracks">
-          {(tracks) =>
-            tracks && tracks.data ? (
-              tracks.data.items.map((track, index) => {
-                return <p key={`${track.name}`}>{track.name}</p>;
-              })
-            ) : (
-              <p>NO TRACKS RETURNED</p>
-            )
-          }
-        </UserTop>
-      </SpotifyApiContext.Provider>
-    );
-  }
+  // const testSpotifyAPI = () => {
+  //   spotifyApi.getMyTopTracks().then(
+  //     function (data) {
+  //       let topTracks = data.body.items;
+  //       Cookies.set('trackRowData', data.body.items);
+  //       console.log(topTracks);
+  //     },
+  //     function (err) {
+  //       console.log('Something went wrong!', err);
+  //       return null;
+  //     }
+  //   );
+  // };
+
+  // function handleCreationClick() {
+
+  //   spotifyApi.getMyTopTracks({ limit: 10 }, function (err, data) {
+  //     if (err) {
+  //       console.error('Something went wrong!');
+  //     } else {
+  //       console.log(data.body);
+  //       console.log(data.body.items);
+
+  //       let arr = [];
+  //       data.body.items.map((track, index) => arr.push(track));
+
+  //       //Cookies.set('trackRowData', data.body.items);
+  //       navigator('/playlistpage', { trackRowData: arr });
+  //     }
+  //   });
+  // }
 
   return (
     <div>
@@ -80,11 +105,7 @@ export default function TimePage() {
         <GeneralPage link="/homepage">
           <div>
             {token ? (
-              <div>
-                <DisplayUsername />
-                <DisplayUserTopTracks />
-                <h1>Here's your stupid token: {token}</h1>
-              </div>
+              console.log('Access Token Validated!')
             ) : (
               <SpotifyAuth
                 redirectUri="http://localhost:3000/timepage"
@@ -100,7 +121,7 @@ export default function TimePage() {
                   Scopes.playlistModifyPublic,
                   Scopes.userReadRecentlyPlayed,
                 ]}
-                onAccessToken={(token) => setToken(token)}
+                onAccessToken={(token) => tokenHandler(token)}
                 noLogo={true}
               />
             )}

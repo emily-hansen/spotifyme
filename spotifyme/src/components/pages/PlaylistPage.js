@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GeneralPage from './GeneralPage';
 import { DataGrid } from '@mui/x-data-grid';
 import ICard from '../ItemCard';
@@ -9,41 +9,108 @@ import Cookies from 'js-cookie';
 import { SpotifyApiContext } from 'react-spotify-api';
 import { SpotifyAuthListener } from 'react-spotify-auth';
 import { Artist } from 'react-spotify-api';
+import SpotifyWebApi from 'spotify-web-api-node';
+import { chainPropTypes } from '@mui/utils';
+import PropTypes from 'prop-types';
+import { validateDate } from '@mui/lab/internal/pickers/date-utils';
+import { BorderVertical } from '@mui/icons-material';
+
+// const columns = [
+//   {
+//     field: 'songTitle',
+//     headerName: 'Title',
+//     width: 400,
+//     editable: true,
+//   },
+//   {
+//     field: 'artist',
+//     headerName: 'Artist',
+//     width: 150,
+//     editable: true,
+//   },
+//   {
+//     field: 'Album',
+//     headerName: 'Album',
+//     width: 150,
+//     editable: true,
+//   },
+//   {
+//     field: 'time',
+//     headerName: 'Time',
+//     width: 100,
+//   },
+// ];
+
 const columns = [
   {
-    field: 'songTitle',
-    headerName: 'Title',
+    field: 'id',
+    headerName: 'ID',
     width: 400,
     editable: true,
   },
   {
-    field: 'artist',
-    headerName: 'Artist',
+    field: 'title',
+    headerName: 'Title',
     width: 150,
     editable: true,
   },
   {
-    field: 'Album',
-    headerName: 'Album',
-    width: 150,
+    field: 'track_id',
+    headerName: 'Track ID',
+    width: 400,
     editable: true,
-  },
-  {
-    field: 'time',
-    headerName: 'Time',
-    width: 100,
   },
 ];
 
-const rows = [];
-
 export default function PlaylistPage() {
+  let [rows, setRows] = useState([]);
+
   const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
 
   const tokenHandler = (token) => {
     console.log(token);
     setToken(token);
   };
+
+  let spotifyApi = new SpotifyWebApi({
+    accessToken: token,
+  });
+
+  const getTracks = () => {
+    spotifyApi.getMyTopTracks({ limit: 10 }, function (err, data) {
+      if (err) {
+        console.error('Something went wrong!');
+      } else {
+        //console.log(data.body.items);
+        //data.body.items.forEach((track) => arr.push(track));
+        //console.log(arr);
+        //let arr = [];
+        let response = [];
+
+        data.body.items.forEach(function (value, index) {
+          response.push({
+            id: index + 1,
+            title: value.name,
+            track_id: value.id,
+          });
+        });
+        console.log(response);
+
+        // data.body.items.forEach((index) => response.push({ id: index, title: index.name }));
+        // console.log(response);
+
+        setRows(response);
+        //setRows(arr);
+      }
+    });
+
+    console.log(rows);
+    return rows;
+  };
+
+  let update = 0;
+
+  useEffect(getTracks, update);
 
   const navigator = useNavigate();
   return (
@@ -87,8 +154,8 @@ export default function PlaylistPage() {
                   <DataGrid
                     rows={rows}
                     columns={columns}
-                    pageSize={9}
-                    rowsPerPageOptions={[5]}
+                    pageSize={10}
+                    rowsPerPageOptions={[10]}
                     sx={{ color: 'white' }}
                   />
                 </div>
