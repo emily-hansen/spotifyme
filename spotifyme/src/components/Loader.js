@@ -4,7 +4,14 @@ import Box from '@mui/material/Box';
 export default function CircleLoader() {
   return (
     <Box sx={{ display: 'flex' }}>
-      <CircularProgress sx={{color:"white"}} />
+      <CircularProgress 
+      size = {20}
+      sx={{color:"white", 
+      position: 'absolute', 
+      top: '50%', 
+      left: '50%', 
+      marginTop: '-12px', 
+      marginLeft: '-12px',}} />
     </Box>
   );
 }

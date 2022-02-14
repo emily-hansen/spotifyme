@@ -70,6 +70,7 @@ export default function TimePage() {
 						</Stack>
 					</ICard>
 					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}
+						disabled={loading}
 						onClick={handleButtonClick}>
 						Create Playlist
 						{loading && (
