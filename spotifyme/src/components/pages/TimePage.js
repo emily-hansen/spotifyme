@@ -4,15 +4,107 @@ import ICard from "../ItemCard";
 import { Stack, TextField, Typography } from "@mui/material";
 import { ColorButton } from "../Button";
 import { useNavigate } from "react-router-dom";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import TimePicker from '@mui/lab/TimePicker';
+import Cookies from 'js-cookie';
+import { SpotifyApiContext, TrackAnalysis, useArtist } from 'react-spotify-api';
+import { SpotifyAuth, SpotifyAuthListener, Scopes } from 'react-spotify-auth';
+import { Artist, UserTop, User, useUser } from 'react-spotify-api';
 
-const color = "#FFFFFF";
+const color = '#FFFFFF';
 
 export default function TimePage() {
-	const navigator = useNavigate();
-	const [value, setValue] = useState(null);
+	const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
 
-	return (
-		<GeneralPage link="/homepage">
+  const [value, setValue] = React.useState(null);
+
+  const navigator = useNavigate();
+
+  const GetUser = (props) => {
+    const { data } = useUser();
+
+    if (data) {
+      return <h1>{data.birthdate}</h1>;
+    }
+    return <h1>Hello</h1>;
+  };
+
+  function DisplayShit() {
+    return (
+      <SpotifyApiContext.Provider value={token}>
+        <h1>{GetUser()}</h1>
+      </SpotifyApiContext.Provider>
+    );
+  }
+
+  function DisplayUsername() {
+    return (
+      <SpotifyApiContext.Provider value={token}>
+        <User>
+          {(user) =>
+            user && user.data ? (
+              <>
+                <h1>Welcome, {user.data.display_name}</h1>
+              </>
+            ) : (
+              <p>Loading...</p>
+            )
+          }
+        </User>
+      </SpotifyApiContext.Provider>
+    );
+  }
+
+  function DisplayUserTopTracks() {
+    return (
+      <SpotifyApiContext.Provider value={token}>
+        <UserTop type="tracks">
+          {(tracks) =>
+            tracks && tracks.data ? (
+              tracks.data.items.map((track, index) => {
+                return <p key={`${track.name}`}>{track.name}</p>;
+              })
+            ) : (
+              <p>NO TRACKS RETURNED</p>
+            )
+          }
+        </UserTop>
+      </SpotifyApiContext.Provider>
+    );
+  }
+
+  return (
+    <div>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <GeneralPage link="/homepage">
+          <div>
+            {token ? (
+              <div>
+                <DisplayUsername />
+                <DisplayUserTopTracks />
+                <h1>Here's your stupid token: {token}</h1>
+              </div>
+            ) : (
+              <SpotifyAuth
+                redirectUri="http://localhost:3000/timepage"
+                clientID="b3f5de56c9334d679e5f34871927c2cc"
+                scopes={[
+                  Scopes.userReadPrivate,
+                  Scopes.userLibraryModify,
+                  Scopes.userLibraryRead,
+                  Scopes.playlistModifyPrivate,
+                  Scopes.playlistReadCollaborative,
+                  Scopes.userReadEmail,
+                  Scopes.userTopRead,
+                  Scopes.playlistModifyPublic,
+                  Scopes.userReadRecentlyPlayed,
+                ]}
+                onAccessToken={(token) => setToken(token)}
+                noLogo={true}
+              />
+            )}
+          </div>
 			<div
 				style={{
 					display: "flex",
@@ -87,5 +179,7 @@ export default function TimePage() {
 				</Stack>
 			</div>
 		</GeneralPage>
+    </LocalizationProvider>
+    </div>
 	);
 }
