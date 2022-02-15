@@ -2,63 +2,69 @@ import React, { useEffect, useState } from 'react';
 import GeneralPage from './GeneralPage';
 import { DataGrid } from '@mui/x-data-grid';
 import ICard from '../ItemCard';
-import { Stack } from '@mui/material';
+import { Stack, Avatar } from '@mui/material';
 import { ColorButton } from '../Button';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { SpotifyApiContext } from 'react-spotify-api';
 import { SpotifyAuthListener } from 'react-spotify-auth';
-import { Artist } from 'react-spotify-api';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { chainPropTypes } from '@mui/utils';
-import PropTypes from 'prop-types';
-import { validateDate } from '@mui/lab/internal/pickers/date-utils';
-import { BorderVertical } from '@mui/icons-material';
-
-// const columns = [
-//   {
-//     field: 'songTitle',
-//     headerName: 'Title',
-//     width: 400,
-//     editable: true,
-//   },
-//   {
-//     field: 'artist',
-//     headerName: 'Artist',
-//     width: 150,
-//     editable: true,
-//   },
-//   {
-//     field: 'Album',
-//     headerName: 'Album',
-//     width: 150,
-//     editable: true,
-//   },
-//   {
-//     field: 'time',
-//     headerName: 'Time',
-//     width: 100,
-//   },
-// ];
 
 const columns = [
   {
     field: 'id',
-    headerName: 'ID',
-    width: 400,
-    editable: true,
+    headerName: 'Track #',
+    align: 'center',
+    width: 100,
+    editable: false,
   },
   {
     field: 'title',
     headerName: 'Title',
-    width: 150,
-    editable: true,
+    renderCell: function (params) {
+      return (
+        <>
+          <Avatar src={params.value.art} variant="square" sizes="small"></Avatar>
+          <span display="inline" style={{ marginInlineStart: '25px' }}>
+            {params.value.track}
+          </span>
+        </>
+      );
+    },
+    width: 300,
+    justifyContent: 'left',
+    editable: false,
   },
   {
-    field: 'track_id',
-    headerName: 'Track ID',
-    width: 400,
-    editable: true,
+    field: 'artist',
+    headerName: 'Artist',
+    width: 200,
+    editable: false,
+  },
+  {
+    field: 'album',
+    headerName: 'Album',
+    width: 200,
+    editable: false,
+  },
+  {
+    field: 'duration',
+    headerName: 'Track Length',
+    align: 'right',
+    valueFormatter: (params) => {
+      let milli = params.value;
+      var minutes = Math.floor(milli / 60000);
+      var seconds = ((milli % 60000) / 1000).toFixed(0);
+
+      //[TODO] Support songs over 60 minutes (basically format it to hh:mm:ss not just mm:ss like it is now)
+      var finalMinute = minutes < 10 ? '0' + `${minutes}` : `${minutes}`;
+      var finalSecond = (seconds < 10 ? '0' : '') + `${seconds}`;
+      var finalFormat = finalMinute + ':' + finalSecond + 's';
+
+      return finalFormat;
+    },
+    width: 150,
+    editable: false,
+    hideable: true,
   },
 ];
 
@@ -81,26 +87,27 @@ export default function PlaylistPage() {
       if (err) {
         console.error('Something went wrong!');
       } else {
-        //console.log(data.body.items);
-        //data.body.items.forEach((track) => arr.push(track));
-        //console.log(arr);
-        //let arr = [];
+        console.log(data.body.items);
         let response = [];
+        let devResponse = []; // this one includes the track ids (maybe for alternative usage?)
 
         data.body.items.forEach(function (value, index) {
+          let artistArray = value.artists[0].name;
+          let albumArt = value.album.images[0].url;
+
+          console.log(albumArt);
           response.push({
             id: index + 1,
-            title: value.name,
-            track_id: value.id,
+            title: { art: value.album.images[0].url, track: value.name },
+            artist: artistArray,
+            album: value.album.name,
+            duration: value.duration_ms,
           });
         });
+
         console.log(response);
 
-        // data.body.items.forEach((index) => response.push({ id: index, title: index.name }));
-        // console.log(response);
-
         setRows(response);
-        //setRows(arr);
       }
     });
 
@@ -157,6 +164,7 @@ export default function PlaylistPage() {
                     pageSize={10}
                     rowsPerPageOptions={[10]}
                     sx={{ color: 'white' }}
+                    rowHeight={100}
                   />
                 </div>
               </Stack>
@@ -173,3 +181,4 @@ export default function PlaylistPage() {
     </div>
   );
 }
+

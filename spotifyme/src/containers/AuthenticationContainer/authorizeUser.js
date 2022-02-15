@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { SpotifyApiContext } from 'react-spotify-api';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import Cookies from 'js-cookie';
 import 'react-spotify-auth/dist/index.css'; // if using the included styles
 import { Button } from '@mui/material';
 import './styles.css';
-import Switch from '@mui/material/Switch';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const AuthorizeUser = () => {
@@ -26,17 +24,21 @@ const AuthorizeUser = () => {
       {token ? (
         <div className="wrapper">
           <SpotifyApiContext.Provider value={token}>
-            {/* Your Spotify Code here */}
             <Button size="small" variant="outlined" onClick={() => navigate('/homepage')}>
               Go to Homepage
             </Button>
+
+            {/* Code for debugging -- a Toggle Switch to see if access token exists 
+            
             <h2>See Token using switch</h2>
             <Switch
               checked={checked}
               onChange={handleChange}
               inputProps={{ 'aria-label': 'controlled' }}
             />
-            <p hidden={checked}>You are authorized with token: {token}</p>
+            <p hidden={checked}>You are authorized with token: {token}</p> 
+            
+            */}
           </SpotifyApiContext.Provider>
         </div>
       ) : (

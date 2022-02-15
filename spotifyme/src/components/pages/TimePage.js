@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
+<<<<<<< HEAD
 import { Stack, TextField, Typography } from "@mui/material";
 import { ColorButton } from "../Button";
 import { useNavigate } from "react-router-dom";
+=======
+import { Stack, TextField } from '@mui/material';
+import { ColorButton } from '../Button';
+import { useNavigate } from 'react-router-dom';
+>>>>>>> 526bc81 (Cleaned up code)
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
 import Cookies from 'js-cookie';
-import { SpotifyApiContext, TrackAnalysis, useArtist } from 'react-spotify-api';
-import { SpotifyAuth, SpotifyAuthListener, Scopes } from 'react-spotify-auth';
-import { Artist, UserTop, User, useUser } from 'react-spotify-api';
+import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { arrayOf } from 'prop-types';
 
 const color = '#FFFFFF';
 
@@ -31,73 +34,6 @@ export default function TimePage() {
   const [value, setValue] = React.useState(null);
 
   const navigator = useNavigate();
-
-  // const GetUser = (props) => {
-  //   const { data } = useUser();
-
-  //   if (data) {
-  //     return <h1>{data.birthdate}</h1>;
-  //   }
-  //   return <h1>Hello</h1>;
-  // };
-
-  // function DisplayShit() {
-  //   return (
-  //     <SpotifyApiContext.Provider value={token}>
-  //       <h1>{GetUser()}</h1>
-  //     </SpotifyApiContext.Provider>
-  //   );
-  // }
-
-  // function DisplayUserTopTracks() {
-  //   return (
-  //     <SpotifyApiContext.Provider value={token}>
-  //       <UserTop type="tracks">
-  //         {(tracks) =>
-  //           tracks && tracks.data ? (
-  //             tracks.data.items.map((track, index) => {
-  //               return <p key={`${track.name}`}>{track.name}</p>;
-  //             })
-  //           ) : (
-  //             <p>NO TRACKS RETURNED</p>
-  //           )
-  //         }
-  //       </UserTop>
-  //     </SpotifyApiContext.Provider>
-  //   );
-  // }
-
-  // const testSpotifyAPI = () => {
-  //   spotifyApi.getMyTopTracks().then(
-  //     function (data) {
-  //       let topTracks = data.body.items;
-  //       Cookies.set('trackRowData', data.body.items);
-  //       console.log(topTracks);
-  //     },
-  //     function (err) {
-  //       console.log('Something went wrong!', err);
-  //       return null;
-  //     }
-  //   );
-  // };
-
-  // function handleCreationClick() {
-
-  //   spotifyApi.getMyTopTracks({ limit: 10 }, function (err, data) {
-  //     if (err) {
-  //       console.error('Something went wrong!');
-  //     } else {
-  //       console.log(data.body);
-  //       console.log(data.body.items);
-
-  //       let arr = [];
-  //       data.body.items.map((track, index) => arr.push(track));
-
-  //       //Cookies.set('trackRowData', data.body.items);
-  //       navigator('/playlistpage', { trackRowData: arr });
-  //     }
-  //   });
-  // }
 
   return (
     <div>

@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Stack } from '@mui/material';
 import { ColorButton, spotifyGreen, spotifyGreenDark } from './Button';
-import { SpotifyAuthListener } from 'react-spotify-auth';
 import Cookies from 'js-cookie';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { User, SpotifyApiContext } from 'react-spotify-api';
 
 //TODO: Need to add functionallity for logging out of spotify
 export default function Header(props) {
+  // Values that have an easily-readable value are best to store as a cookie for now
   const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
   const [userName, setUserName] = useState(Cookies.get('currUser'));
   const [avatar, setAvatar] = useState(Cookies.get('avatarLink'));
+
   let spotifyApi = new SpotifyWebApi({
     accessToken: token,
   });
@@ -20,23 +20,6 @@ export default function Header(props) {
     spotifyApi.setAccessToken(token);
     setToken(token);
   };
-  function DisplayUsername() {
-    return (
-      <SpotifyApiContext.Provider value={token}>
-        <User>
-          {(user) =>
-            user && user.data ? (
-              <>
-                <p>Welcome, {user.data.display_name}</p>
-              </>
-            ) : (
-              <p>Loading...</p>
-            )
-          }
-        </User>
-      </SpotifyApiContext.Provider>
-    );
-  }
 
   // This function get, sets, and creates Cookies for current User's username and avatar
   const getCurrUser = () => {
@@ -45,6 +28,7 @@ export default function Header(props) {
         console.error('Something went wrong');
       } else {
         console.log(data.body);
+
         let response = data.body.display_name;
         Cookies.set('currUserName', response);
         let imres = [];

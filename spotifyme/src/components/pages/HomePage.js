@@ -9,15 +9,9 @@ import GeneralPage from './GeneralPage';
 import { SpotifyAuthListener } from 'react-spotify-auth';
 import Cookies from 'js-cookie';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { User, SpotifyApiContext } from 'react-spotify-api';
 
 export default function HomePage() {
   const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
-
-  // const handleChange = (token) => {
-  //   setToken(token);
-  //   console.log(token);
-  // };
 
   let spotifyApi = new SpotifyWebApi({
     accessToken: token,
