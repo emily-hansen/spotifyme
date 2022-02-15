@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import GeneralPage from "./GeneralPage";
-import ICard from "../ItemCard";
-<<<<<<< HEAD
-import { Stack, TextField, Typography } from "@mui/material";
-import { ColorButton } from "../Button";
-import { useNavigate } from "react-router-dom";
-=======
-import { Stack, TextField } from '@mui/material';
+import ICard from '../ItemCard';
+import { Stack, TextField, Typography } from '@mui/material';
 import { ColorButton } from '../Button';
 import { useNavigate } from 'react-router-dom';
->>>>>>> 526bc81 (Cleaned up code)
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import TimePicker from '@mui/lab/TimePicker';
