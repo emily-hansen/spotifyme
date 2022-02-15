@@ -3,9 +3,13 @@ import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
 import { Stack, Typography, TextField, MenuItem } from "@mui/material";
 import { ColorButton } from "../Button";
+import { useNavigate } from "react-router-dom";
 
-//TODO: Need to format text field so inputs are always HH:MM:SS
+const color = "#FFFFFF";
+
 export default function StatPage() {
+	const [value, setValue] = React.useState(null);
+
 	/**
 	 * 0 = All time
 	 * 1 = Past year
@@ -14,6 +18,8 @@ export default function StatPage() {
 	 * 4 = Past day
 	 */
 	const [year, setYear] = useState(0);
+
+	const navigator = useNavigate();
 
 	return (
 		<GeneralPage link="/homepage">
@@ -33,7 +39,7 @@ export default function StatPage() {
 						alignItems: "center",
 					}}>
 					<ICard
-						nohome
+						nohome="true"
 						text="Make a playlist based on listening statistics."
 						style={{
 							width: "500px",
@@ -41,13 +47,46 @@ export default function StatPage() {
 							justifyContent: "center",
 						}}>
 						<Stack direction="column" spacing={2} sx={{ alignItems: "center" }}>
-							<Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
-								<Typography variant="h5">Time:</Typography>
+							<Stack
+								direction="row"
+								spacing={2}
+								sx={{
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+								}}>
+								<Typography variant="h5" sx={{ color: color }}>
+									Time:
+								</Typography>
 								<TextField
-									id="time"
+									sx={{
+										backgroundColor: color,
+										borderRadius: "5px",
+									}}
 									placeholder="00:00:00"
-									variant="outlined"
-									style={{ backgroundColor: "white", borderRadius: "5px" }}
+									value={value}
+									onChange={(e) => {
+										let newValue = e.target.value.replace(/[^0-9]/g, "");
+										if (newValue.length === 3 || newValue.length === 4) {
+											newValue =
+												newValue.substring(0, 2) + ":" + newValue.substring(2);
+										} else if (newValue.length === 5 || newValue.length === 6) {
+											newValue =
+												newValue.substring(0, 2) +
+												":" +
+												newValue.substring(2, 4) +
+												":" +
+												newValue.substring(4);
+										} else if (newValue.length > 6) {
+											newValue =
+												newValue.substring(0, 2) +
+												":" +
+												newValue.substring(2, 4) +
+												":" +
+												newValue.substring(4, 6);
+										}
+										setValue(newValue);
+									}}
 								/>
 							</Stack>
 							<TextField
@@ -55,7 +94,7 @@ export default function StatPage() {
 								select
 								onChange={(e) => setYear(e.target.value)}
 								sx={{
-									backgroundColor: "white",
+									backgroundColor: color,
 									borderRadius: "5px",
 									width: "200px",
 								}}>
@@ -67,7 +106,9 @@ export default function StatPage() {
 							</TextField>
 						</Stack>
 					</ICard>
-					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}>
+					<ColorButton
+						style={{ width: "150px", textTransform: "capitalize" }}
+						onClick={() => navigator("/playlistpage")}>
 						Create Playlist
 					</ColorButton>
 				</Stack>

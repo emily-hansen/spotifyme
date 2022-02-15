@@ -10,3 +10,7 @@ SpotifyMe is a React-based Web Application created to provide Spotify users the 
 
   ## IMPORTANT DEV NOTES:
   - Required minimum version of Node.js: 14
+
+## SPOTIFY TEST CREDENTIALS:
+  USER: nofohe7796@hax55.com
+  PASSWORD: TestPassword4Devs!

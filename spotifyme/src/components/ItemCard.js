@@ -30,6 +30,8 @@ export const ItemCard = styled(Card)((props) =>
  * @param {string} link - The link of the card
  * @param {string} nohome - If the card is not a home page card
  * @param {JSX.Element} icon - The mui icon of the card
+ * @param {JSON} style - The style of the card
+ * @param {JSON} cstyle - The style of the children of the card
  */
 export default function ICard(props) {
 	const navigator = useNavigate();
@@ -75,7 +77,7 @@ export default function ICard(props) {
 						{props.text}
 					</Grid>
 				) : null}
-				<Grid item xs={11.5}>
+				<Grid item xs={11.5} style={props.cstyle}>
 					{props.children}
 				</Grid>
 			</Grid>
