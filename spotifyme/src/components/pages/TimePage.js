@@ -7,6 +7,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
 import { ColorButton } from "../Button";
+import TimeInput from "../TimeInput";
 import { timeToMs } from "../timeToMs";
 
 const color = "#FFFFFF";
@@ -66,47 +67,7 @@ export default function TimePage() {
 							<Typography variant="h5" sx={{ color: color }}>
 								Time:
 							</Typography>
-							<TextField
-								sx={{
-									backgroundColor: color,
-									borderRadius: "5px",
-								}}
-								placeholder="00:00:00"
-								value={value}
-								onChange={(e) => {
-									let newValue = e.target.value.replace(/[^0-9]/g, "");
-
-									for (let i = 0; i < newValue.length; i++) {
-										if (newValue[i] === "0") {
-											newValue = newValue.slice(i + 1);
-											i--;
-										} else {
-											break;
-										}
-									}
-
-									if (newValue.length === 0) {
-										newValue = "HH:MM:SS";
-									} else if (newValue.length === 1) {
-										newValue = "HHMM0" + newValue;
-									} else if (newValue.length === 2) {
-										newValue = "HHMM" + newValue;
-									} else if (newValue.length === 3) {
-										newValue = "HH0" + newValue;
-									} else if (newValue.length === 4) {
-										newValue = "HH" + newValue;
-									} else if (newValue.length === 5) {
-										newValue = "0" + newValue;
-									} else if (newValue.length === 6) {
-										newValue = newValue;
-									} else {
-										newValue = newValue.slice(0, 6);
-									}
-
-									newValue = newValue.replace(/^(\w{2})(\w{2})/, "$1:$2:");
-									setValue(newValue);
-								}}
-							/>
+							<TimeInput value={value} setValue={setValue} />
 						</Stack>
 					</ICard>
 					<ColorButton

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Stack, Typography, TextField, MenuItem } from "@mui/material";
+
 import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
-import { Stack, Typography, TextField, MenuItem } from "@mui/material";
 import { ColorButton } from "../Button";
-import { useNavigate } from "react-router-dom";
+import TimeInput from "../TimeInput";
 
 const color = "#FFFFFF";
 
 export default function StatPage() {
-	const [value, setValue] = React.useState(null);
+	const [value, setValue] = React.useState("HH:MM:SS");
 
 	/**
 	 * 0 = All time
@@ -58,36 +60,7 @@ export default function StatPage() {
 								<Typography variant="h5" sx={{ color: color }}>
 									Time:
 								</Typography>
-								<TextField
-									sx={{
-										backgroundColor: color,
-										borderRadius: "5px",
-									}}
-									placeholder="00:00:00"
-									value={value}
-									onChange={(e) => {
-										let newValue = e.target.value.replace(/[^0-9]/g, "");
-										if (newValue.length === 3 || newValue.length === 4) {
-											newValue =
-												newValue.substring(0, 2) + ":" + newValue.substring(2);
-										} else if (newValue.length === 5 || newValue.length === 6) {
-											newValue =
-												newValue.substring(0, 2) +
-												":" +
-												newValue.substring(2, 4) +
-												":" +
-												newValue.substring(4);
-										} else if (newValue.length > 6) {
-											newValue =
-												newValue.substring(0, 2) +
-												":" +
-												newValue.substring(2, 4) +
-												":" +
-												newValue.substring(4, 6);
-										}
-										setValue(newValue);
-									}}
-								/>
+								<TimeInput value={value} setValue={setValue} />
 							</Stack>
 							<TextField
 								value={year}
