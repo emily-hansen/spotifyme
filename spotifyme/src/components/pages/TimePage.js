@@ -1,61 +1,37 @@
 import React, { useState } from "react";
-import GeneralPage from "./GeneralPage";
-import ICard from '../ItemCard';
-import { Stack, TextField, Typography } from '@mui/material';
-import { ColorButton } from '../Button';
-import { useNavigate } from 'react-router-dom';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import TimePicker from '@mui/lab/TimePicker';
-import Cookies from 'js-cookie';
-import { SpotifyAuth, Scopes } from 'react-spotify-auth';
-import SpotifyWebApi from 'spotify-web-api-node';
+import { useNavigate } from "react-router-dom";
+import { Stack, TextField, Typography } from "@mui/material";
+import Cookies from "js-cookie";
+import SpotifyWebApi from "spotify-web-api-node";
 
-const color = '#FFFFFF';
+import GeneralPage from "./GeneralPage";
+import ICard from "../ItemCard";
+import { ColorButton } from "../Button";
+import { timeToMs } from "../timeToMs";
+
+const color = "#FFFFFF";
 
 export default function TimePage() {
-	const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
+	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 
-  let spotifyApi = new SpotifyWebApi({
-    accessToken: token,
-  });
+	let spotifyApi = new SpotifyWebApi({
+		accessToken: token,
+	});
 
-  const tokenHandler = (token) => {
-    spotifyApi.setAccessToken(token);
-    setToken(token);
-  };
+	const tokenHandler = (token) => {
+		spotifyApi.setAccessToken(token);
+		setToken(token);
+	};
 
-  const [value, setValue] = React.useState(null);
+	const [value, setValue] = React.useState("HH:MM:SS");
 
-  const navigator = useNavigate();
+	const navigator = useNavigate();
 
-  return (
-    <div>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <GeneralPage link="/homepage">
-          <div>
-            {token ? (
-              console.log('Access Token Validated!')
-            ) : (
-              <SpotifyAuth
-                redirectUri="http://localhost:3000/timepage"
-                clientID="b3f5de56c9334d679e5f34871927c2cc"
-                scopes={[
-                  Scopes.userReadPrivate,
-                  Scopes.userLibraryModify,
-                  Scopes.userLibraryRead,
-                  Scopes.playlistModifyPrivate,
-                  Scopes.playlistReadCollaborative,
-                  Scopes.userReadEmail,
-                  Scopes.userTopRead,
-                  Scopes.playlistModifyPublic,
-                  Scopes.userReadRecentlyPlayed,
-                ]}
-                onAccessToken={(token) => tokenHandler(token)}
-                noLogo={true}
-              />
-            )}
-          </div>
+	return (
+		<GeneralPage link="/homepage">
+			<div>
+				{token ? console.log("Access Token Validated!") : navigator("/")}
+			</div>
 			<div
 				style={{
 					display: "flex",
@@ -99,38 +75,47 @@ export default function TimePage() {
 								value={value}
 								onChange={(e) => {
 									let newValue = e.target.value.replace(/[^0-9]/g, "");
-									if (newValue.length === 3 || newValue.length === 4) {
-										newValue =
-											newValue.substring(0, 2) + ":" + newValue.substring(2);
-									} else if (newValue.length === 5 || newValue.length === 6) {
-										newValue =
-											newValue.substring(0, 2) +
-											":" +
-											newValue.substring(2, 4) +
-											":" +
-											newValue.substring(4);
-									} else if (newValue.length > 6) {
-										newValue =
-											newValue.substring(0, 2) +
-											":" +
-											newValue.substring(2, 4) +
-											":" +
-											newValue.substring(4, 6);
+
+									for (let i = 0; i < newValue.length; i++) {
+										if (newValue[i] === "0") {
+											newValue = newValue.slice(i + 1);
+											i--;
+										} else {
+											break;
+										}
 									}
+
+									if (newValue.length === 0) {
+										newValue = "HH:MM:SS";
+									} else if (newValue.length === 1) {
+										newValue = "HHMM0" + newValue;
+									} else if (newValue.length === 2) {
+										newValue = "HHMM" + newValue;
+									} else if (newValue.length === 3) {
+										newValue = "HH0" + newValue;
+									} else if (newValue.length === 4) {
+										newValue = "HH" + newValue;
+									} else if (newValue.length === 5) {
+										newValue = "0" + newValue;
+									} else if (newValue.length === 6) {
+										newValue = newValue;
+									} else {
+										newValue = newValue.slice(0, 6);
+									}
+
+									newValue = newValue.replace(/^(\w{2})(\w{2})/, "$1:$2:");
 									setValue(newValue);
 								}}
 							/>
 						</Stack>
 					</ICard>
 					<ColorButton
-						style={{ width: "150px", textTransform: "capitalize" }}
-						onClick={() => navigator("/playlistpage")}>
+						style={{ width: "150px" }}
+						onClick={() => console.log(timeToMs(value))}>
 						Create Playlist
 					</ColorButton>
 				</Stack>
 			</div>
 		</GeneralPage>
-    </LocalizationProvider>
-    </div>
 	);
 }

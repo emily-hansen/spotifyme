@@ -107,7 +107,7 @@ export default function StatPage() {
 						</Stack>
 					</ICard>
 					<ColorButton
-						style={{ width: "150px", textTransform: "capitalize" }}
+						style={{ width: "150px" }}
 						onClick={() => navigator("/playlistpage")}>
 						Create Playlist
 					</ColorButton>
