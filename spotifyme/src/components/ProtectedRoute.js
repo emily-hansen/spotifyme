@@ -3,7 +3,9 @@ import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export default function ProtectedRoute(props) {
-	const [token, setToken] = React.useState(Cookies.get("spotifyAuthToken"));
+	const getToken = async () => {
+		return Cookies.get("spotifyAuthToken");
+	};
 
-	return token ? props.children : <Navigate to="/" />;
+	return getToken() ? props.children : <Navigate to="/" />;
 }
