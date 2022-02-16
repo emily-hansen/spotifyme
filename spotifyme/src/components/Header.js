@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Stack } from "@mui/material";
 import { ColorButton, spotifyGreen, spotifyGreenDark } from "./Button";
@@ -12,9 +12,11 @@ export default function Header(props) {
 	const [userName, setUserName] = useState(Cookies.get("currUser"));
 	const [avatar, setAvatar] = useState(Cookies.get("avatarLink"));
 
-	let spotifyApi = new SpotifyWebApi({
-		accessToken: token,
-	});
+	let spotifyApi = useMemo(() => {
+		return new SpotifyWebApi({
+			accessToken: token,
+		});
+	}, [token]);
 
 	const tokenHandler = (token) => {
 		spotifyApi.setAccessToken(token);
@@ -43,7 +45,7 @@ export default function Header(props) {
 		});
 	};
 
-	useLayoutEffect(getCurrUser, []);
+	useLayoutEffect(getCurrUser, [spotifyApi]);
 
 	const navigator = useNavigate();
 	return (

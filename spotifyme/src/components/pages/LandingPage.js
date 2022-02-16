@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Paper, Grid, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
-import { useNavigate } from "react-router-dom";
+
 import AuthorizeUser from "../../containers/AuthenticationContainer/authorizeUser";
 import { spotifyGreen, spotifyGreenDark } from "../Button";
 import ICard from "../ItemCard";
@@ -9,10 +9,8 @@ import "react-spotify-auth/dist/index.css"; // if using the included styles
 import "./styles.css";
 
 export default function LandingPage() {
-	const navigator = useNavigate();
-
 	// Indicates when the page is fully loaded to avoid
-	// spotify - text from being null
+	// spotify-text from being null
 	const [loaded, setLoaded] = useState(0);
 
 	const landingColor = "#1ed760";

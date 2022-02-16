@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import HomePage from "./components/pages/HomePage";
 import LandingPage from "./components/pages/LandingPage";
@@ -7,7 +8,8 @@ import FeaturePage from "./components/pages/FeaturePage";
 import StatPage from "./components/pages/StatPage";
 import PlaylistPage from "./components/pages/PlaylistPage";
 import "react-spotify-auth/dist/index.css"; // if using the included styles
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
 	return (
@@ -21,11 +23,46 @@ function App() {
 		<Router>
 			<Routes>
 				<Route path="/" element={<LandingPage />} />
-				<Route path="homepage" element={<HomePage />} />
-				<Route path="timepage" element={<TimePage />} />
-				<Route path="featurepage" element={<FeaturePage />} />
-				<Route path="statpage" element={<StatPage />} />
-				<Route path="playlistpage" element={<PlaylistPage />} />
+				<Route
+					path="homepage"
+					element={
+						<ProtectedRoute>
+							<HomePage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="timepage"
+					element={
+						<ProtectedRoute>
+							<TimePage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="featurepage"
+					element={
+						<ProtectedRoute>
+							<FeaturePage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="statpage"
+					element={
+						<ProtectedRoute>
+							<StatPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="playlistpage"
+					element={
+						<ProtectedRoute>
+							<PlaylistPage />
+						</ProtectedRoute>
+					}
+				/>
 			</Routes>
 		</Router>
 	);

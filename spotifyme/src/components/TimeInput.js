@@ -8,6 +8,7 @@ export default function TimeInput(props) {
 				backgroundColor: "white",
 				borderRadius: "5px",
 			}}
+			autoFocus
 			value={props.value}
 			onChange={(e) => {
 				let newValue = e.target.value.replace(/[^0-9]/g, "");
@@ -33,9 +34,7 @@ export default function TimeInput(props) {
 					newValue = "HH" + newValue;
 				} else if (newValue.length === 5) {
 					newValue = "0" + newValue;
-				} else if (newValue.length === 6) {
-					newValue = newValue;
-				} else {
+				} else if (newValue.length > 6) {
 					newValue = newValue.slice(0, 6);
 				}
 
