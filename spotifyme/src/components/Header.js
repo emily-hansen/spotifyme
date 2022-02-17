@@ -5,8 +5,8 @@ import { ColorButton, spotifyGreen, spotifyGreenDark } from "./Button";
 import Cookies from "js-cookie";
 import SpotifyWebApi from "spotify-web-api-node";
 
-//TODO: Need to add functionallity for logging out of spotify
 export default function Header(props) {
+	const navigator = useNavigate();
 	// Values that have an easily-readable value are best to store as a cookie for now
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 	const [userName, setUserName] = useState(Cookies.get("currUser"));
@@ -45,25 +45,32 @@ export default function Header(props) {
 		});
 	};
 
+	// Sign out function that clears all cookies
 	const signOut = () => {
 		const url = "https://accounts.spotify.com/en/logout";
+
+		// Logs out of Spotify
 		const spotifyLogoutWindow = window.open(
 			url,
 			"Spotify Logout",
 			"width=700,height=500,top=40,left=40"
 		);
+
 		setTimeout(() => spotifyLogoutWindow.close(), 2000);
+
+		// Deletes cookies
 		document.cookie.split(";").forEach((c) => {
 			document.cookie = c
 				.replace(/^ +/, "")
 				.replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
 		});
+
+		// Navigates to landing page
 		navigator("/");
 	};
 
 	useLayoutEffect(getCurrUser, [spotifyApi]);
 
-	const navigator = useNavigate();
 	return (
 		<div
 			style={{

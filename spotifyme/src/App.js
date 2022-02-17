@@ -11,7 +11,7 @@ import "react-spotify-auth/dist/index.css"; // if using the included styles
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
-function App() {
+export default function App() {
 	return (
 		/** How to use the router:
 		 * For a new page, add a new <Route/> component.
@@ -67,5 +67,3 @@ function App() {
 		</Router>
 	);
 }
-
-export default App;

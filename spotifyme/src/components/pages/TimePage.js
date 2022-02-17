@@ -30,9 +30,6 @@ export default function TimePage() {
 
 	return (
 		<GeneralPage link="/homepage">
-			<div>
-				{token ? console.log("Access Token Validated!") : navigator("/")}
-			</div>
 			<div
 				style={{
 					display: "flex",

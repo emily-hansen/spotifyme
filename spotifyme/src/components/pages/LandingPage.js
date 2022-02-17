@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Paper, Grid, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
+import Cookies from "js-cookie";
 
 import AuthorizeUser from "../../containers/AuthenticationContainer/authorizeUser";
 import { spotifyGreen, spotifyGreenDark } from "../Button";
@@ -106,7 +107,9 @@ export default function LandingPage() {
 						height="50px"
 					/>
 					<Typography className="item" variant="h4">
-						Sign in through Spotify®
+						{Cookies.get("spotifyAuthToken")
+							? "Return to Home Page"
+							: "Sign in through Spotify®"}
 					</Typography>
 					<AuthorizeUser className="item" />
 				</ICard>
