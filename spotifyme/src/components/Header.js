@@ -4,6 +4,7 @@ import { Avatar, Stack } from '@mui/material';
 import { ColorButton, spotifyGreen, spotifyGreenDark } from './Button';
 import Cookies from 'js-cookie';
 import SpotifyWebApi from 'spotify-web-api-node';
+import  CircleLoader  from "./Loader"
 
 //TODO: Need to add functionallity for logging out of spotify
 export default function Header(props) {
@@ -11,6 +12,7 @@ export default function Header(props) {
   const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
   const [userName, setUserName] = useState(Cookies.get('currUser'));
   const [avatar, setAvatar] = useState(Cookies.get('avatarLink'));
+  const [loading, setLoading] = React.useState(false);
 
   let spotifyApi = new SpotifyWebApi({
     accessToken: token,
@@ -39,6 +41,7 @@ export default function Header(props) {
         Cookies.set('avatarLink', imres[0]);
         setAvatar(imres[0]);
         setUserName(response);
+        setLoading(true);
       }
     });
   };
@@ -78,7 +81,8 @@ export default function Header(props) {
           transform: 'translate(-10%, 15%)',
         }}
       >
-        <Avatar
+        
+        {loading ? (<Avatar
           src={avatar}
           style={{
             backgroundColor: `${spotifyGreen}`,
@@ -86,7 +90,11 @@ export default function Header(props) {
               backgroundColor: `${spotifyGreenDark}`,
             }, // need to change so hover animation works
           }}
-        ></Avatar>
+        ></Avatar>) : (
+          <CircleLoader />
+        )
+        }
+        
 
         <span style={{ fontSize: '20px' }}>{userName}</span>
         <ColorButton

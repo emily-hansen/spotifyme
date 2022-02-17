@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { SpotifyAuthListener } from 'react-spotify-auth';
 import SpotifyWebApi from 'spotify-web-api-node';
+import  CircleLoader  from "../Loader"
 
 const columns = [
   {
@@ -72,6 +73,7 @@ export default function PlaylistPage() {
   let [rows, setRows] = useState([]);
 
   const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
+  const [loading, setLoading] = React.useState(false);
 
   const tokenHandler = (token) => {
     console.log(token);
@@ -108,6 +110,7 @@ export default function PlaylistPage() {
         console.log(response);
 
         setRows(response);
+        setLoading(true);
       }
     });
 
@@ -151,21 +154,21 @@ export default function PlaylistPage() {
               }}
             >
               <Stack direction="column" spacing={2} sx={{ alignItems: 'center' }}>
-                <div
+              <div
                   style={{
                     height: 400,
                     width: 1000,
                     backgroundColor: '#181818',
                   }}
                 >
-                  <DataGrid
+                  {loading ? (<DataGrid
                     rows={rows}
                     columns={columns}
                     pageSize={10}
                     rowsPerPageOptions={[10]}
                     sx={{ color: 'white' }}
                     rowHeight={100}
-                  />
+                  />) : (<CircleLoader />) }
                 </div>
               </Stack>
             </ICard>
