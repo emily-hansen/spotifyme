@@ -45,6 +45,22 @@ export default function Header(props) {
 		});
 	};
 
+	const signOut = () => {
+		const url = "https://accounts.spotify.com/en/logout";
+		const spotifyLogoutWindow = window.open(
+			url,
+			"Spotify Logout",
+			"width=700,height=500,top=40,left=40"
+		);
+		setTimeout(() => spotifyLogoutWindow.close(), 2000);
+		document.cookie.split(";").forEach((c) => {
+			document.cookie = c
+				.replace(/^ +/, "")
+				.replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+		});
+		navigator("/");
+	};
+
 	useLayoutEffect(getCurrUser, [spotifyApi]);
 
 	const navigator = useNavigate();
@@ -91,7 +107,7 @@ export default function Header(props) {
 						paddingLeft: "20px",
 						paddingRight: "20px",
 					}}
-					onClick={() => navigator("/")}>
+					onClick={() => signOut()}>
 					Sign Out
 				</ColorButton>
 			</Stack>

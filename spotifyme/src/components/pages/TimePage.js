@@ -72,7 +72,7 @@ export default function TimePage() {
 					</ICard>
 					<ColorButton
 						style={{ width: "150px" }}
-						onClick={() => console.log(timeToMs(value))}>
+						onClick={() => navigator("/playlistpage")}>
 						Create Playlist
 					</ColorButton>
 				</Stack>
