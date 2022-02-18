@@ -1,24 +1,22 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Stack, Typography } from "@mui/material";
+import Cookies from "js-cookie";
+import SpotifyWebApi from "spotify-web-api-node";
+
 import GeneralPage from "./GeneralPage";
 import ICard from '../ItemCard';
-import { Stack, TextField, Typography } from '@mui/material';
 import { ColorButton } from '../Button';
-import { useNavigate } from 'react-router-dom';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import TimePicker from '@mui/lab/TimePicker';
-import Cookies from 'js-cookie';
-import { SpotifyAuth, Scopes } from 'react-spotify-auth';
-import SpotifyWebApi from 'spotify-web-api-node';
-import  CircleLoader  from "../Loader"
+import  CircleLoader  from "../Loader";
+import TimeInput from "../TimeInput";
+import { timeToMs } from "../timeToMs";
 
-const color = '#FFFFFF';
+const color = "#FFFFFF";
 
 export default function TimePage() {
-	const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
+	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 
   const [loading, setLoading] = React.useState(false);
-  const [success, setSuccess] = React.useState(false);
   const timer = React.useRef();
   
   React.useEffect(() => {
@@ -29,10 +27,8 @@ export default function TimePage() {
 
   const handleButtonClick = () => {
     if (!loading) {
-      setSuccess(false);
       setLoading(true);
       timer.current = window.setTimeout(() => {
-        setSuccess(true);
         setLoading(false);
 		navigator("/playlistpage");
       }, 2000);
@@ -43,42 +39,17 @@ export default function TimePage() {
     accessToken: token,
   });
 
-  const tokenHandler = (token) => {
-    spotifyApi.setAccessToken(token);
-    setToken(token);
-  };
+	const tokenHandler = (token) => {
+		spotifyApi.setAccessToken(token);
+		setToken(token);
+	};
 
-  const [value, setValue] = React.useState(null);
+	const [value, setValue] = React.useState("HH:MM:SS");
 
-  const navigator = useNavigate();
+	const navigator = useNavigate();
 
-  return (
-    <div>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <GeneralPage link="/homepage">
-          <div>
-            {token ? (
-              console.log('Access Token Validated!')
-            ) : (
-              <SpotifyAuth
-                redirectUri="http://localhost:3000/timepage"
-                clientID="b3f5de56c9334d679e5f34871927c2cc"
-                scopes={[
-                  Scopes.userReadPrivate,
-                  Scopes.userLibraryModify,
-                  Scopes.userLibraryRead,
-                  Scopes.playlistModifyPrivate,
-                  Scopes.playlistReadCollaborative,
-                  Scopes.userReadEmail,
-                  Scopes.userTopRead,
-                  Scopes.playlistModifyPublic,
-                  Scopes.userReadRecentlyPlayed,
-                ]}
-                onAccessToken={(token) => tokenHandler(token)}
-                noLogo={true}
-              />
-            )}
-          </div>
+	return (
+		<GeneralPage link="/homepage">
 			<div
 				style={{
 					display: "flex",
@@ -113,39 +84,10 @@ export default function TimePage() {
 							<Typography variant="h5" sx={{ color: color }}>
 								Time:
 							</Typography>
-							<TextField
-								sx={{
-									backgroundColor: color,
-									borderRadius: "5px",
-								}}
-								placeholder="00:00:00"
-								value={value}
-								onChange={(e) => {
-									let newValue = e.target.value.replace(/[^0-9]/g, "");
-									if (newValue.length === 3 || newValue.length === 4) {
-										newValue =
-											newValue.substring(0, 2) + ":" + newValue.substring(2);
-									} else if (newValue.length === 5 || newValue.length === 6) {
-										newValue =
-											newValue.substring(0, 2) +
-											":" +
-											newValue.substring(2, 4) +
-											":" +
-											newValue.substring(4);
-									} else if (newValue.length > 6) {
-										newValue =
-											newValue.substring(0, 2) +
-											":" +
-											newValue.substring(2, 4) +
-											":" +
-											newValue.substring(4, 6);
-									}
-									setValue(newValue);
-								}}
-							/>
+							<TimeInput value={value} setValue={setValue} />
 						</Stack>
 					</ICard>
-					<ColorButton style={{ width: "150px", textTransform: "capitalize" }}
+					<ColorButton style={{ width: "150px" }}
 						disabled={loading}
 						onClick={handleButtonClick}>
 						Create Playlist
@@ -156,7 +98,5 @@ export default function TimePage() {
 				</Stack>
 			</div>
 		</GeneralPage>
-    </LocalizationProvider>
-    </div>
 	);
 }
