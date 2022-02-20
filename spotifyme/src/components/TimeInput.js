@@ -40,6 +40,8 @@ export default function TimeInput(props) {
 
 				newValue = newValue.replace(/^(\w{2})(\w{2})/, "$1:$2:");
 				props.setValue(newValue);
+				
+				localStorage.setItem('time', newValue);
 			}}
 		/>
 	);
