@@ -88,7 +88,7 @@ export default function PlaylistPage() {
 	});
 
 	const getTracks = () => {
-		spotifyApi.getMyTopTracks({ limit: 10 }, function (err, data) {
+		spotifyApi.getMyTopTracks({ limit: 50 }, function (err, data) {
 			if (err) {
 				console.error("Something went wrong!");
 			} else {
@@ -110,9 +110,52 @@ export default function PlaylistPage() {
 					});
 				});
 
-				console.log(response);
+								//console.log(response); // "response" stores User's top 50 items
+				//setRows(response);
 
-				setRows(response);
+
+				// create an array  [[id, length], [id, length]...[id, length]] 
+				let array = new Array(50);
+				for (let i = 0; i < 50; i++){
+					array[i] = new Array(2);
+					array[i][0] = i + 1; //id
+					array[i][1] = response[i].duration; //length
+				}
+				//console.log(array);
+
+
+				let selected_songs = []; // stores id of the songs selected (result from PlaylistGen,js)
+
+
+				//console.log(localStorage.getItem("time"));
+				let time = localStorage.getItem("time"); // Given time by user
+				let time_char_array = time.split(':');
+				let time_array = [];
+
+				for (var i = 0; i < time_char_array.length; i++){
+					var temp = parseInt(time_char_array[i]);
+					if(isNaN(temp)){
+						time_array[i] = 0;
+					}
+					else{
+        				time_array[i] = temp;
+        			}
+				}
+				let ms = time_array[0] * 3600000 + time_array[1] * 60000 + time_array[2] * 1000;
+				console.log(ms);
+
+ 
+    			//selected_songs = PlayListGenerator_simple(900000, array); // 60mins (test)
+    			selected_songs = PlayListGenerator_simple(ms, array); // a playlist that lasts a given duration
+    			//console.log(selected_songs);
+    			let result = []; 
+    			for (let i = 0; i < selected_songs.length; i++){
+    				result.push(response[selected_songs[i] - 1]);
+    			}
+    			//console.log(result);
+
+    			
+    			setRows(result);
 			}
 		});
 
@@ -165,8 +208,10 @@ export default function PlaylistPage() {
 									<DataGrid
 										rows={rows}
 										columns={columns}
-										pageSize={10}
-										rowsPerPageOptions={[10]}
+										//pageSize={10}
+										pageSize={50}
+										//rowsPerPageOptions={[10]}
+										rowsPerPageOptions={[50]}
 										sx={{ color: "white" }}
 										rowHeight={100}
 									/>
