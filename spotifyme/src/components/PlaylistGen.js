@@ -1,4 +1,3 @@
-
 let new_playlist = []; //stores ids of playlist to be created
 
 function max(a, b) {
@@ -19,7 +18,6 @@ function shuffle(array) {
 playlist_duration = total duration of new playlist
 songs = imported songs array contains id and song length in ms
 n = index and popularity of song (ordered low to high)
-
  takes an ordered list of most popular/listened to songs
  and generates a playlist using a greedy alg
 is O(2^n) which is not ideal, trying to find a better way
@@ -47,17 +45,16 @@ function PlayListGenerator_popular(playlist_duration, songs, n) {
 playlist_duration = total duration of new playlist
 songs = a 2d array containing song ids and their lengths
 n = index and popularity of song (ordered low to high)
-
 simple creation of playlist that fits given duration
 returns an array of choosen song ids
 */
-function PlayListGenerator_simple(playlist_duration, songs) {
+export default function PlayListGenerator_simple(playlist_duration, songs) {
 
     // To do in this func:
     //  add the functionality to choose playlist with max songs (probably not)
     //  add in advanced user options for generation
 
-    let new_playlist = [];
+    let new_playlist = []; // empty the array added by Hinako
 
     let i = 0;
     shuffle(songs); //not protected but shuffles given array
@@ -85,10 +82,10 @@ function PlayListGenerator_simple(playlist_duration, songs) {
 //------------------------------------------------------testing---------------------------------------------------------
 
 // ---testing values---
-//let songs_test = [ [1, 5], [2, 3], [3, 2], [4, 3], [5, 5], [6, 4], [7, 6], [8, 2], [9, 3], [10, 7]]; //[id, length]
-//let playlist_duration_test = 20; //desired duration
+let songs_test = [ [1, 5], [2, 3], [3, 2], [4, 3], [5, 5], [6, 4], [7, 6], [8, 2], [9, 3], [10, 7]]; //[id, length]
+let playlist_duration_test = 20; //desired duration
 
-//console.log(PlayListGenerator_simple(playlist_duration_test, songs_test));
+console.log(PlayListGenerator_simple(playlist_duration_test, songs_test));
 //----------------------------------------------------------------------------------------------------------------------
 
 /*
