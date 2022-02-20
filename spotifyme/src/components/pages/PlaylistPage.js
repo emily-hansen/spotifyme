@@ -9,7 +9,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import ICard from "../ItemCard";
 import { ColorButton } from "../Button";
 import GeneralPage from "./GeneralPage";
-import PlayListGenerator_simple from "../PlaylistGen.js";
+import PlayListGenerator_simple from "../PlaylistGen";
 
 const columns = [
 	{
