@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LibraryAddCheck, ShutterSpeed, Speed } from '@mui/icons-material';
+import { LibraryAddCheck, ShutterSpeed, Speed, QueueMusic } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 
 import { spotifyGreen } from '../Button';
@@ -34,7 +34,7 @@ export default function HomePage() {
         >
           <ICard
             link="/timepage"
-            head="Time Playlist"
+            head="Timed Playlist"
             text="Make a playlist that runs for a given time based on your recently
 					listened."
             icon={<ShutterSpeed style={{ width: '200px', height: '128px', color: spotifyGreen }} />}
@@ -52,6 +52,12 @@ export default function HomePage() {
             head="Statistic Playlist"
             text="Make a playlist based on listening statistics."
             icon={<Speed style={{ width: '200px', height: '128px', color: spotifyGreen }} />}
+          ></ICard>
+          <ICard
+            link="/viewstatspage"
+            head="View Statistic"
+            text="View top tracks based on listening statistics."
+            icon={<QueueMusic style={{ width: '200px', height: '128px', color: spotifyGreen }} />}
           ></ICard>
         </Stack>
       </GeneralPage>

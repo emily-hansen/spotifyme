@@ -76,7 +76,6 @@ export default function FeaturePage() {
 
 	const handleFeatures = (event, newFeature) => {
 		setFeatures(newFeature);
-		console.log(newFeature);
 	};
 
 	return (

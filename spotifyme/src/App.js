@@ -6,6 +6,7 @@ import TimePage from './components/pages/TimePage';
 import FeaturePage from './components/pages/FeaturePage';
 import StatPage from './components/pages/StatPage';
 import PlaylistPage from './components/pages/PlaylistPage';
+import ViewStatsPage from './components/pages/ViewStatsPage';
 import 'react-spotify-auth/dist/index.css'; // if using the included styles
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="featurepage" element={<FeaturePage />} />
         <Route path="statpage" element={<StatPage />} />
         <Route path="playlistpage" element={<PlaylistPage />} />
+        <Route path="viewstatspage" element={<ViewStatsPage />} />
       </Routes>
     </Router>
   );
