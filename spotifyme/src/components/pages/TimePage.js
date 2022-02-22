@@ -5,9 +5,8 @@ import Cookies from "js-cookie";
 import SpotifyWebApi from "spotify-web-api-node";
 
 import GeneralPage from "./GeneralPage";
-import ICard from '../ItemCard';
-import { ColorButton } from '../Button';
-import  CircleLoader  from "../Loader";
+import ICard from "../ItemCard";
+import { ColorButton } from "../Button";
 import TimeInput from "../TimeInput";
 import { timeToMs } from "../timeToMs";
 
@@ -16,28 +15,9 @@ const color = "#FFFFFF";
 export default function TimePage() {
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 
-  const [loading, setLoading] = React.useState(false);
-  const timer = React.useRef();
-  
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
-
-  const handleButtonClick = () => {
-    if (!loading) {
-      setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setLoading(false);
-		navigator("/playlistpage");
-      }, 2000);
-    }
-  };
-
-  let spotifyApi = new SpotifyWebApi({
-    accessToken: token,
-  });
+	let spotifyApi = new SpotifyWebApi({
+		accessToken: token,
+	});
 
 	const tokenHandler = (token) => {
 		spotifyApi.setAccessToken(token);
@@ -87,13 +67,10 @@ export default function TimePage() {
 							<TimeInput value={value} setValue={setValue} />
 						</Stack>
 					</ICard>
-					<ColorButton style={{ width: "150px" }}
-						disabled={loading}
-						onClick={handleButtonClick}>
+					<ColorButton
+						style={{ width: "150px" }}
+						onClick={() => navigator("/playlistpage")}>
 						Create Playlist
-						{loading && (
-							<CircleLoader></CircleLoader>
-						)}
 					</ColorButton>
 				</Stack>
 			</div>
