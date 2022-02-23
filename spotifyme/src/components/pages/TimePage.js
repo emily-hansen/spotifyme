@@ -20,11 +20,6 @@ export default function TimePage() {
 		accessToken: token,
 	});
 
-	const tokenHandler = (token) => {
-		spotifyApi.setAccessToken(token);
-		setToken(token);
-	};
-
 	const [value, setValue] = React.useState(
 		localStorage.getItem("time") || "HH:MM:SS"
 	);

@@ -61,7 +61,9 @@ export default function FeaturePage() {
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 	const [error, setError] = useState(false);
 
-	const [value, setValue] = React.useState("HH:MM:SS");
+	const [value, setValue] = React.useState(
+		localStorage.getItem("time") || "HH:MM:SS"
+	);
 
 	let spotifyApi = new SpotifyWebApi({
 		accessToken: token,

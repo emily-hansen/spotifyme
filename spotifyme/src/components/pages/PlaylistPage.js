@@ -119,13 +119,11 @@ export default function PlaylistPage() {
 					array[i][1] = response[i].duration; //length
 				}
 
-				let selected_songs = []; // stores id of the songs selected (result from PlaylistGen,js)
-
-				let time = localStorage.getItem("time"); // Given time by user
-				let ms = timeToMs(time);
-				console.log(ms);
-
-				selected_songs = PlayListGenerator_simple(ms, array); // a playlist that lasts a given duration
+				// stores id of the songs selected (result from PlaylistGen,js)
+				let selected_songs = PlayListGenerator_simple(
+					timeToMs(localStorage.getItem("time")),
+					array
+				); // a playlist that lasts a given duration
 				let result = [];
 				for (let i = 0; i < selected_songs.length; i++) {
 					result.push(response[selected_songs[i] - 1]);
