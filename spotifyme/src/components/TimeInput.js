@@ -7,10 +7,16 @@ export default function TimeInput(props) {
 			sx={{
 				backgroundColor: "white",
 				borderRadius: "5px",
+				input: { color: props.error ? "red" : "black" },
 			}}
 			autoFocus
+			error={props.error}
 			value={props.value}
 			onChange={(e) => {
+				if (props.error) {
+					props.setError(false);
+				}
+
 				let newValue = e.target.value.replace(/[^0-9]/g, "");
 
 				for (let i = 0; i < newValue.length; i++) {
@@ -40,8 +46,8 @@ export default function TimeInput(props) {
 
 				newValue = newValue.replace(/^(\w{2})(\w{2})/, "$1:$2:");
 				props.setValue(newValue);
-				
-				localStorage.setItem('time', newValue);
+
+				localStorage.setItem("time", newValue);
 			}}
 		/>
 	);

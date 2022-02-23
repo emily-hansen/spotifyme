@@ -1,11 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { SpotifyApiContext } from "react-spotify-api";
 import { SpotifyAuth, Scopes } from "react-spotify-auth";
 import Cookies from "js-cookie";
 import "react-spotify-auth/dist/index.css"; // if using the included styles
+
 import { ColorButton } from "../../components/Button";
 import "./styles.css";
-import { useNavigate } from "react-router-dom";
 
 const AuthorizeUser = () => {
 	const [token, setToken] = React.useState(Cookies.get("spotifyAuthToken"));
@@ -27,18 +28,6 @@ const AuthorizeUser = () => {
 						<ColorButton onClick={() => navigate("/homepage")}>
 							Go to Homepage
 						</ColorButton>
-
-						{/* Code for debugging -- a Toggle Switch to see if access token exists 
-            
-            <h2>See Token using switch</h2>
-            <Switch
-              checked={checked}
-              onChange={handleChange}
-              inputProps={{ 'aria-label': 'controlled' }}
-            />
-            <p hidden={checked}>You are authorized with token: {token}</p> 
-            
-            */}
 					</SpotifyApiContext.Provider>
 				</div>
 			) : (

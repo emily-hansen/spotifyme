@@ -7,6 +7,8 @@ import {
 	styled,
 	ToggleButton,
 	ToggleButtonGroup,
+	Alert,
+	Snackbar,
 } from "@mui/material";
 import Cookies from "js-cookie";
 
@@ -57,6 +59,7 @@ export const StyledButton = styled(ToggleButton)(() => ({
 
 export default function FeaturePage() {
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
+	const [error, setError] = useState(false);
 
 	const [value, setValue] = React.useState("HH:MM:SS");
 
@@ -136,7 +139,12 @@ export default function FeaturePage() {
 							<Typography variant="h5" sx={{ color: color }}>
 								Time:
 							</Typography>
-							<TimeInput value={value} setValue={setValue} />
+							<TimeInput
+								value={value}
+								error={error}
+								setError={setError}
+								setValue={setValue}
+							/>
 						</Stack>
 						<FeatureGrid
 							orientation="vertical"
@@ -193,14 +201,30 @@ export default function FeaturePage() {
 						</FeatureGrid>
 					</ICard>
 				</Stack>
-
+				<Snackbar
+					anchorOrigin={{
+						vertical: "top",
+						horizontal: "center",
+					}}
+					open={error}
+					autoHideDuration={3000}
+					key={"top" + "center"}
+					onClose={() => setError(false)}>
+					<Alert severity="error">Please enter a valid time.</Alert>
+				</Snackbar>
 				<ColorButton
 					style={{
 						width: "150px",
 						textTransform: "capitalize",
 						marginTop: "10px",
 					}}
-					onClick={() => navigator("/playlistpage")}>
+					onClick={() => {
+						if (value.replace(/[^1-9]/g, "").length === 0) {
+							setError(true);
+						} else {
+							navigator("/playlistpage");
+						}
+					}}>
 					Create Playlist
 				</ColorButton>
 			</Box>

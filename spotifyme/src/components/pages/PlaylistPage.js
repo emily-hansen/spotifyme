@@ -11,6 +11,8 @@ import { ColorButton } from "../Button";
 import GeneralPage from "./GeneralPage";
 import PlayListGenerator_simple from "../PlaylistGen";
 
+import { timeToMs } from "../timeToMs";
+
 const columns = [
 	{
 		field: "id",
@@ -64,7 +66,7 @@ const columns = [
 			//[TODO] Support songs over 60 minutes (basically format it to hh:mm:ss not just mm:ss like it is now)
 			var finalMinute = minutes < 10 ? "0" + `${minutes}` : `${minutes}`;
 			var finalSecond = (seconds < 10 ? "0" : "") + `${seconds}`;
-			var finalFormat = finalMinute + ":" + finalSecond + "s";
+			var finalFormat = finalMinute + ":" + finalSecond;
 
 			return finalFormat;
 		},
@@ -80,7 +82,6 @@ export default function PlaylistPage() {
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 
 	const tokenHandler = (token) => {
-		console.log(token);
 		setToken(token);
 	};
 
@@ -93,9 +94,8 @@ export default function PlaylistPage() {
 			if (err) {
 				console.error("Something went wrong!");
 			} else {
-				console.log(data.body.items);
-				let response = [];
-				let devResponse = []; // this one includes the track ids (maybe for alternative usage?)
+				console.log(data);
+				let response = []; // "response" stores User's top 50 items
 
 				data.body.items.forEach(function (value, index) {
 					let artistArray = value.artists[0].name;
@@ -111,52 +111,27 @@ export default function PlaylistPage() {
 					});
 				});
 
-								//console.log(response); // "response" stores User's top 50 items
-				//setRows(response);
-
-
-				// create an array  [[id, length], [id, length]...[id, length]] 
+				// create an array  [[id, length], [id, length]...[id, length]]
 				let array = new Array(50);
-				for (let i = 0; i < 50; i++){
+				for (let i = 0; i < 50; i++) {
 					array[i] = new Array(2);
 					array[i][0] = i + 1; //id
 					array[i][1] = response[i].duration; //length
 				}
-				//console.log(array);
-
 
 				let selected_songs = []; // stores id of the songs selected (result from PlaylistGen,js)
 
-
-				//console.log(localStorage.getItem("time"));
 				let time = localStorage.getItem("time"); // Given time by user
-				let time_char_array = time.split(':');
-				let time_array = [];
-
-				for (var i = 0; i < time_char_array.length; i++){
-					var temp = parseInt(time_char_array[i]);
-					if(isNaN(temp)){
-						time_array[i] = 0;
-					}
-					else{
-        				time_array[i] = temp;
-        			}
-				}
-				let ms = time_array[0] * 3600000 + time_array[1] * 60000 + time_array[2] * 1000;
+				let ms = timeToMs(time);
 				console.log(ms);
 
- 
-    			//selected_songs = PlayListGenerator_simple(900000, array); // 60mins (test)
-    			selected_songs = PlayListGenerator_simple(ms, array); // a playlist that lasts a given duration
-    			//console.log(selected_songs);
-    			let result = []; 
-    			for (let i = 0; i < selected_songs.length; i++){
-    				result.push(response[selected_songs[i] - 1]);
-    			}
-    			//console.log(result);
+				selected_songs = PlayListGenerator_simple(ms, array); // a playlist that lasts a given duration
+				let result = [];
+				for (let i = 0; i < selected_songs.length; i++) {
+					result.push(response[selected_songs[i] - 1]);
+				}
 
-    			
-    			setRows(result);
+				setRows(result);
 			}
 		});
 
@@ -202,19 +177,17 @@ export default function PlaylistPage() {
 								sx={{ alignItems: "center" }}>
 								<div
 									style={{
-										height: 400,
-										width: 1000,
+										height: "50vh",
+										width: "60vw",
 										backgroundColor: "#181818",
 									}}>
 									<DataGrid
 										rows={rows}
 										columns={columns}
-										//pageSize={10}
 										pageSize={50}
-										//rowsPerPageOptions={[10]}
 										rowsPerPageOptions={[50]}
 										sx={{ color: "white" }}
-										rowHeight={100}
+										rowHeight={50}
 									/>
 								</div>
 							</Stack>

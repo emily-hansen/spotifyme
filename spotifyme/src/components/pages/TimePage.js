@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Alert, Snackbar } from "@mui/material";
 import Cookies from "js-cookie";
 import SpotifyWebApi from "spotify-web-api-node";
 
@@ -14,6 +14,7 @@ const color = "#FFFFFF";
 
 export default function TimePage() {
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
+	const [error, setError] = useState(false);
 
 	let spotifyApi = new SpotifyWebApi({
 		accessToken: token,
@@ -24,7 +25,9 @@ export default function TimePage() {
 		setToken(token);
 	};
 
-	const [value, setValue] = React.useState("HH:MM:SS");
+	const [value, setValue] = React.useState(
+		localStorage.getItem("time") || "HH:MM:SS"
+	);
 
 	const navigator = useNavigate();
 
@@ -64,16 +67,38 @@ export default function TimePage() {
 							<Typography variant="h5" sx={{ color: color }}>
 								Time:
 							</Typography>
-							<TimeInput value={value} setValue={setValue} />
+							<TimeInput
+								value={value}
+								error={error}
+								setError={setError}
+								setValue={setValue}
+							/>
 						</Stack>
 					</ICard>
 					<ColorButton
 						style={{ width: "150px" }}
-						onClick={() => navigator("/playlistpage")}>
+						onClick={() => {
+							if (value.replace(/[^1-9]/g, "").length === 0) {
+								setError(true);
+							} else {
+								navigator("/playlistpage");
+							}
+						}}>
 						Create Playlist
 					</ColorButton>
 				</Stack>
 			</div>
+			<Snackbar
+				anchorOrigin={{
+					vertical: "top",
+					horizontal: "center",
+				}}
+				open={error}
+				autoHideDuration={3000}
+				key={"top" + "center"}
+				onClose={() => setError(false)}>
+				<Alert severity="error">Please enter a valid time.</Alert>
+			</Snackbar>
 		</GeneralPage>
 	);
 }
