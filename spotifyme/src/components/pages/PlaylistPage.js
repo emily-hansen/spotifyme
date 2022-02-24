@@ -113,7 +113,7 @@ export default function PlaylistPage() {
 					});
 				});
 
-								//console.log(response); // "response" stores User's top 50 items
+				//console.log(response); // "response" stores User's top 50 items
 				//setRows(response);
 
 
@@ -142,23 +142,23 @@ export default function PlaylistPage() {
 					}
 					else{
         				time_array[i] = temp;
-        			}
+        				}
 				}
 				let ms = time_array[0] * 3600000 + time_array[1] * 60000 + time_array[2] * 1000;
 				console.log(ms);
 
  
-    			//selected_songs = PlayListGenerator_simple(900000, array); // 60mins (test)
-    			selected_songs = PlayListGenerator_simple(ms, array); // a playlist that lasts a given duration
-    			//console.log(selected_songs);
-    			let result = []; 
-    			for (let i = 0; i < selected_songs.length; i++){
-    				result.push(response[selected_songs[i] - 1]);
-    			}
-    			//console.log(result);
+				//selected_songs = PlayListGenerator_simple(900000, array); // 60mins (test)
+				selected_songs = PlayListGenerator_simple(ms, array); // a playlist that lasts a given duration
+				//console.log(selected_songs);
+				let result = []; 
+				for (let i = 0; i < selected_songs.length; i++){
+					result.push(response[selected_songs[i] - 1]);
+				}
+				//console.log(result);
 
-    			
-    			setRows(result);
+
+				setRows(result);
 				setLoading(true);
 			}
 		});
