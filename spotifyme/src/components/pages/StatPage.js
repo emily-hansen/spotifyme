@@ -10,8 +10,7 @@ import TimeInput from "../TimeInput";
 const color = "#FFFFFF";
 
 export default function StatPage() {
-	const [value, setValue] = React.useState("HH:MM:SS");
-
+	const navigator = useNavigate();
 	/**
 	 * 0 = All time
 	 * 1 = Past year
@@ -20,8 +19,7 @@ export default function StatPage() {
 	 * 4 = Past day
 	 */
 	const [year, setYear] = useState(0);
-
-	const navigator = useNavigate();
+	const [value, setValue] = useState("HH:MM:SS");
 
 	return (
 		<GeneralPage link="/homepage">

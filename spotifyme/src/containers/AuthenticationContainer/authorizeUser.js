@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SpotifyApiContext } from "react-spotify-api";
 import { SpotifyAuth, Scopes } from "react-spotify-auth";
@@ -9,16 +9,8 @@ import { ColorButton } from "../../components/Button";
 import "./styles.css";
 
 const AuthorizeUser = () => {
-	const [token, setToken] = React.useState(Cookies.get("spotifyAuthToken"));
-
 	const navigate = useNavigate();
-
-	const [checked, setChecked] = React.useState(true);
-
-	const handleChange = (event) => {
-		setChecked(event.target.checked);
-		console.log(token);
-	};
+	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 
 	return (
 		<div className="wrapper">

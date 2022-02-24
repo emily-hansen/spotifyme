@@ -58,10 +58,11 @@ export const StyledButton = styled(ToggleButton)(() => ({
 }));
 
 export default function FeaturePage() {
+	const navigator = useNavigate();
+	const [features, setFeatures] = useState(() => []);
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 	const [error, setError] = useState(false);
-
-	const [value, setValue] = React.useState(
+	const [value, setValue] = useState(
 		localStorage.getItem("time") || "HH:MM:SS"
 	);
 
@@ -74,9 +75,6 @@ export default function FeaturePage() {
 		setToken(token);
 	};
 
-	const navigator = useNavigate();
-	const [features, setFeatures] = React.useState(() => []);
-
 	const handleFeatures = (event, newFeature) => {
 		setFeatures(newFeature);
 		console.log(newFeature);
@@ -84,27 +82,6 @@ export default function FeaturePage() {
 
 	return (
 		<GeneralPage link="/homepage">
-			{token ? (
-				console.log("Access Token Validated!")
-			) : (
-				<SpotifyAuth
-					redirectUri="http://localhost:3000/featurepage"
-					clientID="b3f5de56c9334d679e5f34871927c2cc"
-					scopes={[
-						Scopes.userReadPrivate,
-						Scopes.userLibraryModify,
-						Scopes.userLibraryRead,
-						Scopes.playlistModifyPrivate,
-						Scopes.playlistReadCollaborative,
-						Scopes.userReadEmail,
-						Scopes.userTopRead,
-						Scopes.playlistModifyPublic,
-						Scopes.userReadRecentlyPlayed,
-					]}
-					onAccessToken={(token) => tokenHandler(token)}
-					noLogo={true}
-				/>
-			)}
 			{/* Stack is the different playlist types */}
 			<Box
 				style={{
@@ -146,6 +123,16 @@ export default function FeaturePage() {
 								error={error}
 								setError={setError}
 								setValue={setValue}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") {
+										if (value.replace(/[^1-9]/g, "").length === 0) {
+											setError(true);
+											return;
+										}
+										localStorage.setItem("time", value);
+										navigator("/playlistpage");
+									}
+								}}
 							/>
 						</Stack>
 						<FeatureGrid
@@ -217,7 +204,6 @@ export default function FeaturePage() {
 				<ColorButton
 					style={{
 						width: "150px",
-						textTransform: "capitalize",
 						marginTop: "10px",
 					}}
 					onClick={() => {

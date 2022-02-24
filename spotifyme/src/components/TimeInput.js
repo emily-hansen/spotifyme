@@ -49,6 +49,7 @@ export default function TimeInput(props) {
 
 				localStorage.setItem("time", newValue);
 			}}
+			onKeyDown={props.onKeyDown}
 		/>
 	);
 }

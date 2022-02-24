@@ -37,15 +37,13 @@ const ColorSlider = styled(Slider)(({ theme }) => ({
 	},
 }));
 
-function valuetext(value) {
-	return `${value}`;
-}
-
 export default function SpotifySlider() {
 	return (
 		<ColorSlider
 			aria-label="Hours"
-			getAriaValueText={valuetext}
+			getAriaValueText={(value) => {
+				return `${value}`;
+			}}
 			valueLabelDisplay="on"
 			step={1}
 			marks

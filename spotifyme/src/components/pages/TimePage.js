@@ -8,23 +8,20 @@ import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
 import { ColorButton } from "../Button";
 import TimeInput from "../TimeInput";
-import { timeToMs } from "../timeToMs";
 
 const color = "#FFFFFF";
 
 export default function TimePage() {
+	const navigator = useNavigate();
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 	const [error, setError] = useState(false);
+	const [value, setValue] = useState(
+		localStorage.getItem("time") || "HH:MM:SS"
+	);
 
 	let spotifyApi = new SpotifyWebApi({
 		accessToken: token,
 	});
-
-	const [value, setValue] = React.useState(
-		localStorage.getItem("time") || "HH:MM:SS"
-	);
-
-	const navigator = useNavigate();
 
 	return (
 		<GeneralPage link="/homepage">
@@ -67,6 +64,16 @@ export default function TimePage() {
 								error={error}
 								setError={setError}
 								setValue={setValue}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") {
+										if (value.replace(/[^1-9]/g, "").length === 0) {
+											setError(true);
+											return;
+										}
+										localStorage.setItem("time", value);
+										navigator("/playlistpage");
+									}
+								}}
 							/>
 						</Stack>
 					</ICard>
@@ -75,9 +82,9 @@ export default function TimePage() {
 						onClick={() => {
 							if (value.replace(/[^1-9]/g, "").length === 0) {
 								setError(true);
-							} else {
-								navigator("/playlistpage");
+								return;
 							}
+							navigator("/playlistpage");
 						}}>
 						Create Playlist
 					</ColorButton>

@@ -77,31 +77,29 @@ const columns = [
 ];
 
 export default function PlaylistPage() {
-	let [rows, setRows] = useState([]);
-
+	const navigator = useNavigate();
+	const [rows, setRows] = useState([]);
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
-
-	const tokenHandler = (token) => {
-		setToken(token);
-	};
 
 	let spotifyApi = new SpotifyWebApi({
 		accessToken: token,
 	});
+
+	const tokenHandler = (token) => {
+		setToken(token);
+	};
 
 	const getTracks = () => {
 		spotifyApi.getMyTopTracks({ limit: 50 }, function (err, data) {
 			if (err) {
 				console.error("Something went wrong!");
 			} else {
-				console.log(data);
 				let response = []; // "response" stores User's top 50 items
 
 				data.body.items.forEach(function (value, index) {
 					let artistArray = value.artists[0].name;
 					let albumArt = value.album.images[0].url;
 
-					console.log(albumArt);
 					response.push({
 						id: index + 1,
 						title: { art: value.album.images[0].url, track: value.name },
@@ -133,7 +131,6 @@ export default function PlaylistPage() {
 			}
 		});
 
-		console.log(rows);
 		return rows;
 	};
 
@@ -141,7 +138,6 @@ export default function PlaylistPage() {
 
 	useEffect(getTracks, [update]);
 
-	const navigator = useNavigate();
 	return (
 		<>
 			<SpotifyAuthListener onAccessToken={(token) => tokenHandler(token)} />

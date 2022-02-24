@@ -29,8 +29,6 @@ export default function Header(props) {
 			if (err) {
 				console.error("Something went wrong");
 			} else {
-				console.log(data.body);
-
 				let response = data.body.display_name;
 				Cookies.set("currUserName", response);
 				let imres = [];
