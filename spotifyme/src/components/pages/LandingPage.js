@@ -7,7 +7,6 @@ import AuthorizeUser from "../../containers/AuthenticationContainer/authorizeUse
 import { spotifyGreen, spotifyGreenDark } from "../Button";
 import ICard from "../ItemCard";
 import "react-spotify-auth/dist/index.css"; // if using the included styles
-import "./styles.css";
 
 export default function LandingPage() {
 	// Indicates when the page is fully loaded to avoid

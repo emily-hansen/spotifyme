@@ -4,7 +4,7 @@ import { Avatar, Stack } from "@mui/material";
 import { ColorButton, spotifyGreen, spotifyGreenDark } from "./Button";
 import Cookies from "js-cookie";
 import SpotifyWebApi from "spotify-web-api-node";
-import  CircleLoader  from "./Loader"
+import CircleLoader from "./Loader";
 
 export default function Header(props) {
 	const navigator = useNavigate();
@@ -12,7 +12,7 @@ export default function Header(props) {
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 	const [userName, setUserName] = useState(Cookies.get("currUser"));
 	const [avatar, setAvatar] = useState(Cookies.get("avatarLink"));
-	const [loading, setLoading] = React.useState(false);
+	const [loading, setLoading] = useState(false);
 
 	let spotifyApi = useMemo(() => {
 		return new SpotifyWebApi({
@@ -38,13 +38,13 @@ export default function Header(props) {
 					imres.push(value.url);
 				});
 
-        Cookies.set('avatarLink', imres[0]);
-        setAvatar(imres[0]);
-        setUserName(response);
-        setLoading(true);
-      }
-    });
-  };
+				Cookies.set("avatarLink", imres[0]);
+				setAvatar(imres[0]);
+				setUserName(response);
+				setLoading(true);
+			}
+		});
+	};
 
 	// Sign out function that clears all cookies
 	const signOut = () => {
@@ -102,15 +102,16 @@ export default function Header(props) {
 				}}>
 				{loading ? (
 					<Avatar
-          				src={avatar}
-          					style={{
-            				backgroundColor: `${spotifyGreen}`,
-            				'&:hover': {
-              				backgroundColor: `${spotifyGreenDark}`,
-            				}, // need to change so hover animation works
-          				}}
-        			></Avatar>) : (<CircleLoader />)
-        		}
+						src={avatar}
+						style={{
+							backgroundColor: `${spotifyGreen}`,
+							"&:hover": {
+								backgroundColor: `${spotifyGreenDark}`,
+							}, // need to change so hover animation works
+						}}></Avatar>
+				) : (
+					<CircleLoader />
+				)}
 
 				<span style={{ fontSize: "20px" }}>{userName}</span>
 				<ColorButton

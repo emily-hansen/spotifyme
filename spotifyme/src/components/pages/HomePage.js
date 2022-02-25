@@ -13,6 +13,9 @@ import GeneralPage from "./GeneralPage";
 export default function HomePage() {
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 
+	// To remove previously entered times.
+	localStorage.removeItem("time");
+
 	let spotifyApi = new SpotifyWebApi({
 		accessToken: token,
 	});
