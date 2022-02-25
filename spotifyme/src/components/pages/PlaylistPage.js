@@ -9,6 +9,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import ICard from "../ItemCard";
 import { ColorButton } from "../Button";
 import GeneralPage from "./GeneralPage";
+import CircleLoader from "../Loader";
 import PlayListGenerator_simple from "../PlaylistGen";
 
 import { timeToMs } from "../timeToMs";
@@ -80,6 +81,7 @@ export default function PlaylistPage() {
 	const navigator = useNavigate();
 	const [rows, setRows] = useState([]);
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
+	const [loading, setLoading] = useState(false);
 
 	let spotifyApi = new SpotifyWebApi({
 		accessToken: token,
@@ -122,12 +124,14 @@ export default function PlaylistPage() {
 					timeToMs(localStorage.getItem("time")),
 					array
 				); // a playlist that lasts a given duration
+
 				let result = [];
 				for (let i = 0; i < selected_songs.length; i++) {
 					result.push(response[selected_songs[i] - 1]);
 				}
 
 				setRows(result);
+				setLoading(true);
 			}
 		});
 
@@ -175,14 +179,18 @@ export default function PlaylistPage() {
 										width: "60vw",
 										backgroundColor: "#181818",
 									}}>
-									<DataGrid
-										rows={rows}
-										columns={columns}
-										pageSize={50}
-										rowsPerPageOptions={[50]}
-										sx={{ color: "white" }}
-										rowHeight={50}
-									/>
+									{loading ? (
+										<DataGrid
+											rows={rows}
+											columns={columns}
+											pageSize={50}
+											rowsPerPageOptions={[50]}
+											sx={{ color: "white" }}
+											rowHeight={50}
+										/>
+									) : (
+										<CircleLoader />
+									)}
 								</div>
 							</Stack>
 						</ICard>
