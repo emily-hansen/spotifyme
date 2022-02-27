@@ -150,6 +150,7 @@ export default function PlaylistPage() {
 		return rows;
 	};
 
+	// Saves playlist to user's Spotify account
 	const savePlaylist = () => {
 		spotifyApi
 			.createPlaylist(Cookies.get("spotifyUserID"), {
@@ -314,6 +315,11 @@ export default function PlaylistPage() {
 								style={{ width: "150px" }}
 								onClick={() => setSavedPlaylist([null, true])}>
 								Save Playlist
+							</ColorButton>
+							<ColorButton
+								style={{ width: "150px" }}
+								onClick={() => getTracks()}>
+								Regenerate Playlist
 							</ColorButton>
 						</Stack>
 					</Stack>
