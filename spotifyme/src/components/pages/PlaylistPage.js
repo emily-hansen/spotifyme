@@ -70,15 +70,19 @@ const columns = [
 		align: "right",
 		valueFormatter: (params) => {
 			let milli = params.value;
-			var minutes = Math.floor(milli / 60000);
-			var seconds = ((milli % 60000) / 1000).toFixed(0);
+			let minutes = Math.floor(milli / 60000);
+			let seconds = ((milli % 60000) / 1000).toFixed(0);
+			let hours = Math.floor(minutes / 60);
+
+			if (hours > 0) minutes = minutes % 60;
 
 			//[TODO] Support songs over 60 minutes (basically format it to hh:mm:ss not just mm:ss like it is now)
-			var finalMinute = minutes < 10 ? "0" + `${minutes}` : `${minutes}`;
 			var finalSecond = (seconds < 10 ? "0" : "") + `${seconds}`;
-			var finalFormat = finalMinute + ":" + finalSecond;
+			var finalMinute = minutes < 10 ? "0" + `${minutes}:` : `${minutes}:`;
+			let finalHour =
+				hours < 10 ? (hours === 0 ? "" : "0" + `${hours}:`) : `${hours}:`;
 
-			return finalFormat;
+			return finalHour + finalMinute + finalSecond;
 		},
 		width: 150,
 		editable: false,
