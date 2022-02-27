@@ -1,27 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Stack, Typography, Alert, Snackbar } from "@mui/material";
-import Cookies from "js-cookie";
-import SpotifyWebApi from "spotify-web-api-node";
 
 import GeneralPage from "./GeneralPage";
 import ICard from "../ItemCard";
 import { ColorButton } from "../Button";
 import TimeInput from "../TimeInput";
 
-const color = "#FFFFFF";
-
 export default function TimePage() {
 	const navigator = useNavigate();
-	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 	const [error, setError] = useState(false);
 	const [value, setValue] = useState(
 		localStorage.getItem("time") || "HH:MM:SS"
 	);
-
-	let spotifyApi = new SpotifyWebApi({
-		accessToken: token,
-	});
 
 	return (
 		<GeneralPage link="/homepage">
@@ -56,7 +47,7 @@ export default function TimePage() {
 								justifyContent: "center",
 								alignItems: "center",
 							}}>
-							<Typography variant="h5" sx={{ color: color }}>
+							<Typography variant="h5" sx={{ color: "#fff" }}>
 								Time:
 							</Typography>
 							<TimeInput
@@ -97,7 +88,6 @@ export default function TimePage() {
 				}}
 				open={error}
 				autoHideDuration={3000}
-				key={"top" + "center"}
 				onClose={() => setError(false)}>
 				<Alert severity="error">Please enter a valid time.</Alert>
 			</Snackbar>

@@ -70,17 +70,16 @@ const columns = [
 		align: "right",
 		valueFormatter: (params) => {
 			let milli = params.value;
-			let minutes = Math.floor(milli / 60000);
 			let seconds = ((milli % 60000) / 1000).toFixed(0);
+			let minutes = Math.floor(milli / 60000);
 			let hours = Math.floor(minutes / 60);
 
 			if (hours > 0) minutes = minutes % 60;
 
-			//[TODO] Support songs over 60 minutes (basically format it to hh:mm:ss not just mm:ss like it is now)
-			var finalSecond = (seconds < 10 ? "0" : "") + `${seconds}`;
-			var finalMinute = minutes < 10 ? "0" + `${minutes}:` : `${minutes}:`;
+			var finalSecond = seconds < 10 ? `0${seconds}` : `${seconds}`;
+			var finalMinute = minutes < 10 ? `0${minutes}:` : `${minutes}:`;
 			let finalHour =
-				hours < 10 ? (hours === 0 ? "" : "0" + `${hours}:`) : `${hours}:`;
+				hours < 10 ? (hours === 0 ? "" : `0${hours}:`) : `${hours}:`;
 
 			return finalHour + finalMinute + finalSecond;
 		},
@@ -96,6 +95,7 @@ export default function PlaylistPage() {
 	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
 	const [loading, setLoading] = useState(false);
 	const [savedPlaylist, setSavedPlaylist] = useState([null, false]);
+	const [playlistSaved, setPlaylistSaved] = useState(false);
 	const [info, setInfo] = useState(["", ""]);
 
 	let spotifyApi = new SpotifyWebApi({
@@ -127,7 +127,7 @@ export default function PlaylistPage() {
 					});
 				});
 
-				// create an array  [[id, length], [id, length]...[id, length]]
+				// create an array  [[id, length], [id, length], ..., [id, length]]
 				let array = new Array(50);
 				for (let i = 0; i < 50; i++) {
 					array[i] = new Array(2);
@@ -170,16 +170,19 @@ export default function PlaylistPage() {
 					)
 					.then((data) => {
 						setSavedPlaylist(["saved", false]);
+						setPlaylistSaved(false);
 						setInfo(["", ""]);
 					})
 					.catch((err) => {
 						setSavedPlaylist(["error", false]);
+						setPlaylistSaved(false);
 						setInfo(["", ""]);
 						console.log(err);
 					});
 			})
 			.catch((err) => {
 				setSavedPlaylist(["error", false]);
+				setPlaylistSaved(false);
 				setInfo(["", ""]);
 				console.log(err);
 			});
@@ -192,74 +195,6 @@ export default function PlaylistPage() {
 	return (
 		<>
 			<SpotifyAuthListener onAccessToken={(token) => tokenHandler(token)} />
-			<Snackbar
-				anchorOrigin={{
-					vertical: "top",
-					horizontal: "center",
-				}}
-				open={savedPlaylist[0]}
-				autoHideDuration={3000}
-				key={"top" + "center"}
-				onClose={() => setSavedPlaylist([null, savedPlaylist[1]])}>
-				{savedPlaylist[0] === "error" ? (
-					<Alert severity="error">Error saving playlist.</Alert>
-				) : (
-					<Alert severity="success">Playlist saved!</Alert>
-				)}
-			</Snackbar>
-			<Modal
-				open={savedPlaylist[1]}
-				onClose={() => setSavedPlaylist([null, false])}
-				aria-labelledby="modal-title">
-				<Box
-					sx={{
-						position: "absolute",
-						top: "50%",
-						left: "50%",
-						transform: "translate(-50%, -50%)",
-						width: 400,
-						bgcolor: "background.paper",
-						border: "2px solid #000",
-						boxShadow: 24,
-						p: 4,
-						borderRadius: "10px",
-					}}>
-					<Typography
-						id="modal-title"
-						variant="h6"
-						sx={{ marginBottom: "5px" }}>
-						Enter Playlist Information:
-					</Typography>
-					<Stack spacing={2}>
-						<TextField
-							autoFocus
-							value={info[0]}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									savePlaylist();
-								}
-							}}
-							onChange={(e) => setInfo([e.target.value, info[1]])}
-							placeholder="Playlist Name"
-						/>
-						<TextField
-							value={info[1]}
-							onKeyDown={(e) => {
-								if (e.key === "Enter") {
-									savePlaylist();
-								}
-							}}
-							onChange={(e) => setInfo([info[0], e.target.value])}
-							placeholder="Playlist Description"
-						/>
-						<ColorButton
-							style={{ width: "150px", alignSelf: "center" }}
-							onClick={savePlaylist}>
-							Save Playlist
-						</ColorButton>
-					</Stack>
-				</Box>
-			</Modal>
 			<GeneralPage link="/homepage">
 				<div
 					style={{
@@ -329,6 +264,76 @@ export default function PlaylistPage() {
 					</Stack>
 				</div>
 			</GeneralPage>
+			<Modal
+				open={savedPlaylist[1]}
+				onClose={() => setSavedPlaylist([null, false])}
+				aria-labelledby="modal-title">
+				<Box
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: 400,
+						bgcolor: "background.paper",
+						border: "2px solid #000",
+						boxShadow: 24,
+						p: 4,
+						borderRadius: "10px",
+					}}>
+					<Typography
+						id="modal-title"
+						variant="h6"
+						sx={{ marginBottom: "5px" }}>
+						Enter Playlist Information:
+					</Typography>
+					<Stack spacing={2}>
+						<TextField
+							autoFocus
+							value={info[0]}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									savePlaylist();
+								}
+							}}
+							onChange={(e) => setInfo([e.target.value, info[1]])}
+							placeholder="Playlist Name"
+						/>
+						<TextField
+							value={info[1]}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
+									savePlaylist();
+								}
+							}}
+							onChange={(e) => setInfo([info[0], e.target.value])}
+							placeholder="Playlist Description"
+						/>
+						<ColorButton
+							style={{ width: "150px", height: "40px", alignSelf: "center" }}
+							onClick={() => {
+								setPlaylistSaved(true);
+								savePlaylist();
+							}}>
+							{playlistSaved ? <CircleLoader /> : "Save Playlist"}
+						</ColorButton>
+					</Stack>
+				</Box>
+			</Modal>
+			<Snackbar
+				anchorOrigin={{
+					vertical: "top",
+					horizontal: "center",
+				}}
+				open={savedPlaylist[0]}
+				autoHideDuration={3000}
+				onClose={() => setSavedPlaylist([null, savedPlaylist[1]])}>
+				{savedPlaylist[0] === "error" ? (
+					<Alert severity="error">Error saving playlist.</Alert>
+				) : (
+					<Alert severity="success">Playlist saved!</Alert>
+				)}
+			</Snackbar>
 		</>
 	);
 }
