@@ -188,9 +188,7 @@ export default function PlaylistPage() {
 			});
 	};
 
-	let update = 0;
-
-	useEffect(getTracks, [update]);
+	useEffect(getTracks, []);
 
 	return (
 		<>
@@ -293,6 +291,7 @@ export default function PlaylistPage() {
 							value={info[0]}
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
+									setPlaylistSaved(true);
 									savePlaylist();
 								}
 							}}
@@ -303,6 +302,7 @@ export default function PlaylistPage() {
 							value={info[1]}
 							onKeyDown={(e) => {
 								if (e.key === "Enter") {
+									setPlaylistSaved(true);
 									savePlaylist();
 								}
 							}}

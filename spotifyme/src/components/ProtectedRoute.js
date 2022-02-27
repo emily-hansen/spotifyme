@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import Cookies from "js-cookie";
 import { SpotifyAuthListener } from "react-spotify-auth";
@@ -9,9 +9,13 @@ export default function ProtectedRoute(props) {
 	const [loading, setLoading] = useState(true);
 	const [count, setCount] = useState(0);
 
-	let spotifyApi = new SpotifyWebApi({
-		accessToken: token,
-	});
+	let spotifyApi = useMemo(
+		() =>
+			new SpotifyWebApi({
+				accessToken: token,
+			}),
+		[token]
+	);
 
 	const tokenHandler = (token) => {
 		spotifyApi.setAccessToken(token);
@@ -27,7 +31,7 @@ export default function ProtectedRoute(props) {
 		if (count <= 10) {
 			setCount(count + 1);
 		}
-	}, [token, count]);
+	}, [token, count, spotifyApi]);
 
 	return (
 		<>

@@ -20,11 +20,6 @@ export default function Header(props) {
 		});
 	}, [token]);
 
-	const tokenHandler = (token) => {
-		spotifyApi.setAccessToken(token);
-		setToken(token);
-	};
-
 	// This function get, sets, and creates Cookies for current User's username and avatar
 	const getCurrUser = () => {
 		spotifyApi.getMe((err, data) => {
