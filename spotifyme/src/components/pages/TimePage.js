@@ -33,7 +33,7 @@ export default function TimePage() {
 					}}>
 					<ICard
 						nohome="true"
-						text="Make a playlist that runs for a given time based on your recently listened."
+						text="Make a playlist that runs for a given time based on your recent top songs."
 						style={{
 							width: "500px",
 							height: "200px",

@@ -37,8 +37,7 @@ export default function HomePage() {
 					<ICard
 						link="/timepage"
 						head="Time Playlist"
-						text="Make a playlist that runs for a given time based on your recently
-					listened."
+						text="Make a playlist that runs for a given time based on your recent top songs."
 						icon={
 							<ShutterSpeed
 								style={{ width: "200px", height: "128px", color: spotifyGreen }}

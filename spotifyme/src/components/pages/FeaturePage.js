@@ -106,7 +106,7 @@ export default function FeaturePage() {
 					<ICard
 						nohome="true"
 						head="Feature Playlist"
-						text="Make a playlist that runs for a given time and selected features based on your recently listened."
+						text="Make a playlist based on specified features."
 						style={{
 							width: "500px",
 						}}>
