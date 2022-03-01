@@ -55,8 +55,8 @@ export default function HomePage() {
 						}></ICard>
 					<ICard
 						link="/statpage"
-						head="Statistic Playlist"
-						text="Make a playlist based on listening statistics."
+						head="View Statistic"
+						text="View top tracks and artists based on your listening statistics."
 						icon={
 							<Speed
 								style={{ width: "200px", height: "128px", color: spotifyGreen }}
