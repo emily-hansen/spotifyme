@@ -46,7 +46,7 @@ export default function HomePage() {
 					<ICard
 						link="/featurepage"
 						head="Feature Playlist"
-						text="Make a playlist based on specified features."
+						text="Make a playlist based on given time and specified features."
 						icon={
 							<LibraryAddCheck
 								style={{ width: "200px", height: "128px", color: spotifyGreen }}

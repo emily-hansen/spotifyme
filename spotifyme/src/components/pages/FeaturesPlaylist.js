@@ -371,7 +371,7 @@ export default function PlaylistPage() {
 						<Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
 							<ColorButton
 								style={{ width: "150px" }}
-								onClick={() => navigator("/homepage")}>
+								onClick={() => navigator("/FeaturePage")}>
 								Create New
 							</ColorButton>
 							<ColorButton

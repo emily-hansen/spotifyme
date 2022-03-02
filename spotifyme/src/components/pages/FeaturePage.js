@@ -106,7 +106,7 @@ export default function FeaturePage() {
 					<ICard
 						nohome="true"
 						head="Feature Playlist"
-						text="Make a playlist based on specified features."
+						text="Make a playlist based on given time and specified features. Final playlist will be shorter than provided time if songs do not fill time perfectly."
 						style={{
 							width: "500px",
 						}}>
@@ -217,7 +217,7 @@ export default function FeaturePage() {
 									<StyledButton
 										value="instrumental"
 										style={{ backgroundColor: "#dc244b" }}>
-										Instrumentalness
+										Instrumental
 									</StyledButton>
 								</Tooltip>
 
@@ -229,7 +229,7 @@ export default function FeaturePage() {
 									<StyledButton
 										value="speech"
 										style={{ backgroundColor: "#af1d3c" }}>
-										Speechiness
+										Lyrics
 									</StyledButton>
 								</Tooltip>
 							</FeatureGrid>
@@ -252,7 +252,7 @@ export default function FeaturePage() {
 								</Tooltip>
 
 								<Tooltip
-									title="INTENSE SONGS"
+									title="Fast, loud, and noisy"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
@@ -270,7 +270,7 @@ export default function FeaturePage() {
 								onChange={(event, newFeature) => setOtherFeatures(newFeature)}
 								aria-label="feature">
 								<Tooltip
-									title="Danceable Songs"
+									title="Songs suitable for dancing"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
