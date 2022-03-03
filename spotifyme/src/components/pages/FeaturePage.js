@@ -52,6 +52,16 @@ export const StyledButton = styled(ToggleButton)(() => ({
 	},
 }));
 
+const ToggleTip = styled(Tooltip)(({ selected }) =>
+	selected
+		? {
+				outlineColor: "#1DB954",
+				outlineStyle: "solid",
+				outlineWidth: "4px",
+		  }
+		: null
+);
+
 export default function FeaturePage() {
 	const navigator = useNavigate();
 	const [value, setValue] = useState(
@@ -148,28 +158,30 @@ export default function FeaturePage() {
 								value={valFeature}
 								onChange={(event, newFeature) => setValenceFeatures(newFeature)}
 								aria-label="feature">
-								<Tooltip
+								<ToggleTip
+									selected={valFeature === "uplift"}
 									title="Positive-Type Songs"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="uplift"
-										style={{ backgroundColor: "#73b7b8" }}>
+										style={{ backgroundColor: "#73b7b8", color: "#fff" }}>
 										Uplifting
 									</StyledButton>
-								</Tooltip>
-								<Tooltip
+								</ToggleTip>
+								<ToggleTip
+									selected={valFeature === "vex"}
 									title="Negative-Type Songs"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="vex"
-										style={{ backgroundColor: "#52a1a3" }}>
+										style={{ backgroundColor: "#52a1a3", color: "#fff" }}>
 										Vexing
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 							</FeatureGrid>
 
 							<FeatureGrid
@@ -178,29 +190,31 @@ export default function FeaturePage() {
 								value={tempoFeature}
 								onChange={(event, newFeature) => setTempoFeatures(newFeature)}
 								aria-label="feature">
-								<Tooltip
+								<ToggleTip
+									selected={tempoFeature === "slowtempo"}
 									title="Lower Songs"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="slowtempo"
-										style={{ backgroundColor: "#76c8b1" }}>
+										style={{ backgroundColor: "#76c8b1", color: "#fff" }}>
 										Slow Tempo
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 
-								<Tooltip
+								<ToggleTip
+									selected={tempoFeature === "fasttempo"}
 									title="Faster Songs"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="fasttempo"
-										style={{ backgroundColor: "#50b99b" }}>
+										style={{ backgroundColor: "#50b99b", color: "#fff" }}>
 										Fast Tempo
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 							</FeatureGrid>
 
 							<FeatureGrid
@@ -209,29 +223,31 @@ export default function FeaturePage() {
 								value={focusFeature}
 								onChange={(event, newFeature) => setFocusFeatures(newFeature)}
 								aria-label="feature">
-								<Tooltip
+								<ToggleTip
+									selected={focusFeature === "instrumental"}
 									title="Songs with Mostly Instrumentals"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="instrumental"
-										style={{ backgroundColor: "#dc244b" }}>
+										style={{ backgroundColor: "#dc244b", color: "#fff" }}>
 										Instrumental
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 
-								<Tooltip
+								<ToggleTip
+									selected={focusFeature === "speech"}
 									title="Songs with Mostly Vocals"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="speech"
-										style={{ backgroundColor: "#af1d3c" }}>
+										style={{ backgroundColor: "#af1d3c", color: "#fff" }}>
 										Lyrics
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 							</FeatureGrid>
 
 							<FeatureGrid
@@ -239,29 +255,31 @@ export default function FeaturePage() {
 								value={features}
 								onChange={(event, newFeature) => setOtherFeatures(newFeature)}
 								aria-label="feature">
-								<Tooltip
+								<ToggleTip
+									selected={features.includes("pop")}
 									title="Mainstream Songs"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="pop"
-										style={{ backgroundColor: "#f6cb52" }}>
+										style={{ backgroundColor: "#f6cb52", color: "#fff" }}>
 										Popularity
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 
-								<Tooltip
+								<ToggleTip
+									selected={features.includes("energy")}
 									title="Fast, loud, and noisy"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="energy"
-										style={{ backgroundColor: "#f3b816" }}>
+										style={{ backgroundColor: "#f3b816", color: "#fff" }}>
 										Energetic
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 							</FeatureGrid>
 
 							<FeatureGrid
@@ -269,29 +287,31 @@ export default function FeaturePage() {
 								value={features}
 								onChange={(event, newFeature) => setOtherFeatures(newFeature)}
 								aria-label="feature">
-								<Tooltip
+								<ToggleTip
+									selected={features.includes("dance")}
 									title="Songs suitable for dancing"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="dance"
-										style={{ backgroundColor: "#f05a29" }}>
+										style={{ backgroundColor: "#f05a29", color: "#fff" }}>
 										Danceability
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 
-								<Tooltip
+								<ToggleTip
+									selected={features.includes("acoustic")}
 									title="Analog Songs"
 									enterDelay={500}
 									leaveDelay={200}
 									placement="top">
 									<StyledButton
 										value="acoustic"
-										style={{ backgroundColor: "#d23f0f" }}>
+										style={{ backgroundColor: "#d23f0f", color: "#fff" }}>
 										Acousticness
 									</StyledButton>
-								</Tooltip>
+								</ToggleTip>
 							</FeatureGrid>
 						</CustomPaper>
 					</ICard>
