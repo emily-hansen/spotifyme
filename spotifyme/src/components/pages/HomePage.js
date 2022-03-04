@@ -15,6 +15,10 @@ export default function HomePage() {
 
 	// To remove previously entered times.
 	localStorage.removeItem("time");
+	localStorage.removeItem("val");
+	localStorage.removeItem("tempo");
+	localStorage.removeItem("focus");
+	localStorage.removeItem("features");
 
 	let spotifyApi = new SpotifyWebApi({
 		accessToken: token,

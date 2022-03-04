@@ -21,7 +21,7 @@ import TimeInput from "../TimeInput";
 const color = "#FFFFFF";
 
 // Styling for box/features grid layout
-export const FeatureGrid = styled(ToggleButtonGroup)(() => ({
+const FeatureGrid = styled(ToggleButtonGroup)(() => ({
 	justifyContent: "center",
 	alignItems: "center",
 	display: "grid",
@@ -30,14 +30,14 @@ export const FeatureGrid = styled(ToggleButtonGroup)(() => ({
 }));
 
 // Styling for paper
-export const CustomPaper = styled(Paper)(() => ({
+const CustomPaper = styled(Paper)(() => ({
 	backgroundColor: "#181818",
 	padding: "10px",
 	marginTop: "15px",
 }));
 
 // Styling for audio feature buttons
-export const StyledButton = styled(ToggleButton)(() => ({
+const StyledButton = styled(ToggleButton)(() => ({
 	fontWeight: "bold",
 	fontSize: "20px",
 	textTransform: "capitalize",
@@ -68,10 +68,18 @@ export default function FeaturePage() {
 		localStorage.getItem("time") || "HH:MM:SS"
 	);
 	const [error, setError] = useState(false);
-	const [valFeature, setValenceFeatures] = useState([]);
-	const [tempoFeature, setTempoFeatures] = useState([]);
-	const [focusFeature, setFocusFeatures] = useState([]);
-	const [features, setOtherFeatures] = useState([]);
+	const [valFeature, setValenceFeatures] = useState(
+		localStorage.getItem("val") || []
+	);
+	const [tempoFeature, setTempoFeatures] = useState(
+		localStorage.getItem("tempo") || []
+	);
+	const [focusFeature, setFocusFeatures] = useState(
+		localStorage.getItem("focus") || []
+	);
+	const [features, setOtherFeatures] = useState(
+		JSON.parse(localStorage.getItem("features")) || []
+	);
 
 	let featureArray = [];
 
@@ -143,6 +151,10 @@ export default function FeaturePage() {
 											return;
 										}
 										localStorage.setItem("time", value);
+										localStorage.setItem("val", valFeature);
+										localStorage.setItem("tempo", tempoFeature);
+										localStorage.setItem("focus", focusFeature);
+										localStorage.setItem("features", JSON.stringify(features));
 										navigator("/featureplaylist", {
 											state: { featureData: featureArray },
 										});
@@ -328,6 +340,10 @@ export default function FeaturePage() {
 							setError(true);
 							return;
 						}
+						localStorage.setItem("val", valFeature);
+						localStorage.setItem("tempo", tempoFeature);
+						localStorage.setItem("focus", focusFeature);
+						localStorage.setItem("features", JSON.stringify(features));
 						navigator("/featureplaylist", {
 							state: { featureData: featureArray },
 						});
