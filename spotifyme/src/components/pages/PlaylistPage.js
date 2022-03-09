@@ -5,6 +5,7 @@ import {
 	Avatar,
 	Box,
   Button,
+	IconButton,
 	Modal,
 	Snackbar,
 	Stack,
@@ -29,7 +30,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { timeToMs } from '../timeToMs';
 import { spotifyGreen, spotifyGreenDark } from "../Button";
 import { color, styled } from "@mui/system";
-
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 const columns = [
   {
     field: 'id',
@@ -96,9 +97,6 @@ const columns = [
   },
 ];
 
-// const addTrackColumns = [...columns, {
-//   field
-// }]
 
 export default function PlaylistPage() {
   const navigator = useNavigate();
@@ -108,9 +106,6 @@ export default function PlaylistPage() {
   const [savedPlaylist, setSavedPlaylist] = useState([null, false]);
   const [playlistSaved, setPlaylistSaved] = useState(false);
   const [info, setInfo] = useState(['', '']);
-
-
-  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   const [searchFieldVal, setSearchFieldVal] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -133,7 +128,6 @@ export default function PlaylistPage() {
   const [searchFieldVis, setSearchFieldVis] = useState('none');
 
   const [songsToAdd, setSongsToAdd] = useState([]);
-  // const [addSongModalHeight, setAddSongModalHeight] = useState('5vh');
 
 
   let addSongModalHeight = `${Math.imul(searchResults.length, 62)}`;
@@ -141,12 +135,80 @@ export default function PlaylistPage() {
     accessToken: token,
   });
 
+
+  const addTrackColumns = [
+    {
+      field: 'id',
+      headerName: 'Track #',
+      align: 'center',
+      width: 100,
+      editable: false,
+      hide: true,
+    },
+    {
+      field: 'title',
+      headerName: 'Title',
+      renderCell: function (params) {
+        return (
+          <>
+            <IconButton onClick={() => handlePlusClick(params)}>
+              <AddCircleOutlineOutlinedIcon sx={{color: 'white'}}/>
+            </IconButton>
+            <Avatar src={params.value.art} variant="square" sx={{ width: 45, height: 45, paddingLeft: .4}}></Avatar>
+            <span display="inline" style={{ marginInlineStart: '25px' }}>
+              {params.value.track}
+            </span>
+          </>
+        );
+      },
+      flex: 1,
+      justifyContent: 'left',
+      editable: false,
+  
+    },
+    {
+      field: 'artist',
+      headerName: 'Artist',
+      flex: .5,
+      //width: 325,
+      editable: false,
+    },
+    {
+      field: 'album',
+      headerName: 'Album',
+      flex: .6,
+      //width: 350,
+      editable: false,
+    },
+    {
+      field: 'duration',
+      headerName: 'Track Length',
+      
+      align: 'center',
+      valueFormatter: (params) => {
+        let milli = params.value;
+        let seconds = ((milli % 60000) / 1000).toFixed(0);
+        let minutes = Math.floor(milli / 60000);
+        let hours = Math.floor(minutes / 60);
+  
+        if (hours > 0) minutes = minutes % 60;
+  
+        var finalSecond = seconds < 10 ? `0${seconds}` : `${seconds}`;
+        var finalMinute = minutes < 10 ? `0${minutes}:` : `${minutes}:`;
+        let finalHour = hours < 10 ? (hours === 0 ? '' : `0${hours}:`) : `${hours}:`;
+  
+        return finalHour + finalMinute + finalSecond;
+      },
+      //width: 150,
+      flex: .2,
+      editable: false,
+      hideable: true,
+    },
+  ];
+
+
   const tokenHandler = (token) => {
     setToken(token);
-  };
-
-  const handleDialogClose = () => {
-    setAddDialogOpen(false);
   };
 
   const handleSearchFieldChange = (event) => {
@@ -213,48 +275,29 @@ export default function PlaylistPage() {
     setAddButtonColor('#1DB954');
   }
 
-  const handleAddClick = () => {
-    let temp = [];
-    let x = rows;
-    x.forEach((value, index) => {
-      temp.push(value)
-    })
-    let i = temp.length
-    songsToAdd.forEach((value, index) => {
+  const handlePlusClick = (params) => {
 
-      if (index != 0) {
-        temp.push({
-          id: Math.random() * (1000 - 500) + 500,
-          title: value.title,
-          artist: value.artist,
-          album: value.album,
-          duration: value.duration,
-          songID: value.id,
-        });
-      }
-      
-    })
+    console.log(params.value.trackId)
+    let currSearchRows = searchResults;
+    let currPlaylistRows = [];
+    rows.forEach(item => currPlaylistRows.push(item))
 
-    console.log(temp);
-    setRows(temp);
-    
+    // Get song object to add
+    let songToAdd = currSearchRows.find(el => el.title.trackId == params.value.trackId)
+    console.log(songToAdd);
+
+    // Remove song from results
+    let res = currSearchRows.filter(item => item !== songToAdd)
+    console.log(res)
+
+    // set updated result list
+    setSearchResults(res);
+
+    // set updated playlist
+    currPlaylistRows.push(songToAdd);
+    console.log(currPlaylistRows);
+    setRows(currPlaylistRows);
   }
-
-  // function resolveAfterSet(x) {
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       resolve(setSearchResults(x));
-  //     }, 2000);
-  //   });
-  // }
-
-  // async function f1(x) {
-  //   await resolveAfterSet(x);
-  //   console.log(searchResults);
-  //   setSearchResultDisplay('visible');
-  //   setSearchLoading(false);
-
-  // }
 
   /*********************************** GET TRACKS ******************************************/
 
@@ -280,7 +323,7 @@ export default function PlaylistPage() {
 
           response.push({
             id: index + 1,
-            title: { art: trackArt, track: trackName},
+            title: { art: trackArt, track: trackName, trackId: id},
             artist: artist,
             album: album,
             duration: duration,
@@ -486,8 +529,6 @@ export default function PlaylistPage() {
               
                 <div
                   style={{
-                    // display: 'flex',
-                    // flexDirection: 'column'
                     display: `${searchFieldVis}`,
                     height: 'fit-content',
                     maxHeight: '80vh',
@@ -539,7 +580,6 @@ export default function PlaylistPage() {
                             borderColor: 'white',
                             backgroundColor: 'none',
                             color: 'white',
-                            // label: 'white',
                     
                           },
 
@@ -569,26 +609,27 @@ export default function PlaylistPage() {
                     >
                     <DataGrid
                           rows={searchResults}
-                          checkboxSelection
+                          //checkboxSelection
                           loading={searchLoading}
-                          columns={columns}
+                          columns={addTrackColumns}
                           pageSize={10}
                           rowsPerPageOptions={[3]}
                           sx={{ backgroundColor: '#181818', accentColor: '#181818', color: 'white', margin: '5px'}}
                           rowHeight={62}
                           hideFooter
                           
-                          onSelectionModelChange={(ids) => {
-                            const selectedIDs = new Set(ids);
-                            const selectedRowData = searchResults.filter((row) => 
-                            selectedIDs.has(row.id)
-                            );
-                            setSongsToAdd(selectedRowData);
-                            console.log(selectedRowData)
-                            console.log(songsToAdd)
+                          disableSelectionOnClick
+                          // onSelectionModelChange={(ids) => {
+                          //   const selectedIDs = new Set(ids);
+                          //   const selectedRowData = searchResults.filter((row) => 
+                          //   selectedIDs.has(row.id)
+                          //   );
+                          //   setSongsToAdd(selectedRowData);
+                            //console.log(selectedRowData)
+                            //console.log(songsToAdd)
                             
 
-                          }}
+                          //}}
                           
                         />
                     </div>
@@ -633,23 +674,7 @@ export default function PlaylistPage() {
                           Cancel
                         </Button>
 
-                        <Button
-                          variant='outlined' 
-                          size="small" 
-                          sx={{color: 'white', borderColor: 'white', outlineColor: 'white'}}
-                          style={{ width: '150px', 
-                          color: `${addButtonColor}`, 
-                          borderColor: `${addButtonColor}`, 
-                          accentColor: 'white',
-                          display:  `${searchFieldVis}`,
-                          }} 
-                          onMouseEnter={handleMouseEnterAdderButton} 
-                          onMouseOut={handleMouseExitAdderButton}
-                          onClick={handleAddClick}
-                      
-                        >
-                          Add
-                        </Button>
+                        
                   
                   
                   
