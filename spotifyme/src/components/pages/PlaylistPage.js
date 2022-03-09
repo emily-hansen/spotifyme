@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	Alert,
@@ -127,8 +127,33 @@ export default function PlaylistPage() {
 
   const [searchFieldVis, setSearchFieldVis] = useState('none');
 
-  const [songsToAdd, setSongsToAdd] = useState([]);
 
+// ATTEMPTING THROTTLE
+
+
+  // const inputRef = useRef()
+  // const throttling = useRef(false)
+
+  // const handleThrottleSearch = (event) => {
+  //   setSearchFieldVal(event.target.value);
+
+  //   if (throttling.current) {
+  //     return
+  //   }
+  //     // if there is no search term, do not make the API call
+  //   if (!inputRef.current.value.trim()) {
+  //     setSearchResults([])
+  //     return
+  //   }
+
+  //   throttling.current = true
+  //   setTimeout(() => {
+  //     throttling.current = false
+  //     executeSearch()
+  //   }, 600)
+  // }
+
+ 
 
   let addSongModalHeight = `${Math.imul(searchResults.length, 62)}`;
   let spotifyApi = new SpotifyWebApi({
@@ -261,6 +286,13 @@ export default function PlaylistPage() {
     setSearchFieldVal("");
     setSearchButtonVis('none')
     setCancelButtonVis('none')
+    setSearchFieldVal("");
+    setSearchResults([]);
+  }
+
+  const handleSearchAbort = () => {
+    setSearchFieldVal("")
+    setSearchResults([])
   }
 
   const handleSearchDisplay = () => {
@@ -341,10 +373,6 @@ export default function PlaylistPage() {
     setTimeout(setSearchLoading(false), 1000);
     //console.log(searchResults);
   }
-
-
-
-
 
   /*********************************** GET TRACKS ******************************************/
 
@@ -546,6 +574,9 @@ export default function PlaylistPage() {
                       variant='outlined'
                       fullWidth={true}
                       onChange={handleSearchFieldChange}
+                      onAbort={handleSearchAbort}
+                      //ref={inputRef}
+                      //onChange={handleThrottleSearch}
                       sx={{
 
                         marginBottom: '0px',
@@ -619,6 +650,7 @@ export default function PlaylistPage() {
                           hideFooter
                           
                           disableSelectionOnClick
+                          
                           // onSelectionModelChange={(ids) => {
                           //   const selectedIDs = new Set(ids);
                           //   const selectedRowData = searchResults.filter((row) => 
