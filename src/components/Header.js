@@ -68,56 +68,61 @@ export default function Header(props) {
 	useLayoutEffect(getCurrUser, [spotifyApi]);
 
 	return (
-		<div
-			style={{
-				backgroundColor: "#000",
-				height: "50px",
-				width: "100vw",
-			}}>
-			<ColorButton
-				style={{
-					position: "relative",
-					top: "50%",
-					transform: "translate(20%, -50%)",
-					paddingLeft: "30px",
-					paddingRight: "30px",
-				}}
-				onClick={() => navigator(props.link)}>
-				Home
-			</ColorButton>
-			<Stack
-				direction="row"
-				spacing={2}
-				style={{
-					float: "right",
-					color: "#fff",
-					display: "flex",
-					alignItems: "center",
-					transform: "translate(-10%, 15%)",
-				}}>
-				{loading ? (
-					<Avatar
-						src={avatar}
-						style={{
-							backgroundColor: `${spotifyGreen}`,
-							"&:hover": {
-								backgroundColor: `${spotifyGreenDark}`,
-							}, // need to change so hover animation works
-						}}></Avatar>
-				) : (
-					<CircleLoader />
-				)}
+    <div
+      style={{
+        backgroundColor: '#000',
+        height: '50px',
+        width: '100vw',
+      }}
+    >
+      <ColorButton
+        style={{
+          position: 'relative',
+          top: '50%',
+          transform: 'translate(20%, -50%)',
+          paddingLeft: '30px',
+          paddingRight: '30px',
+        }}
+        onClick={() => navigator(props.link)}
+      >
+        Home
+      </ColorButton>
+      <Stack
+        direction="row"
+        spacing={2}
+        style={{
+          float: 'right',
+          color: '#fff',
+          display: 'flex',
+          alignItems: 'center',
+          transform: 'translate(-10%, 15%)',
+        }}
+      >
+        {loading ? (
+          <Avatar
+            src={avatar}
+            style={{
+              backgroundColor: `${spotifyGreen}`,
+              '&:hover': {
+                backgroundColor: `${spotifyGreenDark}`,
+              },
+            }}
+          ></Avatar>
+        ) : (
+          <CircleLoader />
+        )}
 
-				<span style={{ fontSize: "20px" }}>{userName}</span>
-				<ColorButton
-					style={{
-						paddingLeft: "20px",
-						paddingRight: "20px",
-					}}
-					onClick={() => signOut()}>
-					Sign Out
-				</ColorButton>
-			</Stack>
-		</div>
-	);
+        <span style={{ fontSize: '20px' }}>{userName}</span>
+        <ColorButton
+          style={{
+            paddingLeft: '20px',
+            paddingRight: '20px',
+          }}
+          onClick={() => signOut()}
+        >
+          Sign Out
+        </ColorButton>
+      </Stack>
+    </div>
+  );
 }

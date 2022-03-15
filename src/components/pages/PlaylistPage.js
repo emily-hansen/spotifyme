@@ -201,10 +201,6 @@ export default function PlaylistPage() {
     setSearchFieldVal(event.target.value);
   };
 
-  // const handleSearchResultDisplay = () => {
-  //   setSearchResultDisplay('block');
-  // };
-
   const handleMouseEnterSongButton = () => {
     setAddSongButtonText('#1DB954');
     setAddSongButtonColor('#178E41');
@@ -251,18 +247,6 @@ export default function PlaylistPage() {
     setSearchFieldVal('');
     setSearchResults([]);
   };
-
-  // const handleSearchDisplay = () => {
-  //   setSearchResultDisplay('block');
-  // };
-
-  // const handleMouseEnterAdderButton = () => {
-  //   setAddButtonColor('#178E41');
-  // };
-
-  // const handleMouseExitAdderButton = () => {
-  //   setAddButtonColor('#1DB954');
-  // };
 
   const handlePlusClick = (params) => {
     console.log(params.value.trackId);
@@ -421,7 +405,6 @@ export default function PlaylistPage() {
             alignItems: 'center',
             justifyContent: 'center',
             height: 'calc(100vh - 50px)',
-            //width: '100vw',
           }}
         >
           <Stack
