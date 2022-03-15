@@ -139,6 +139,7 @@ export default function PlaylistPage() {
     setCancelButtonVis('none');
     setSearchFieldVal('');
     setSearchResults([]);
+    setSearchResultDisplay('hidden');
   };
 
   const handleSearchAbort = () => {
@@ -437,11 +438,13 @@ export default function PlaylistPage() {
                       ...searchFieldStyling,
                     }}
                   />
+
                   <div
                     style={{
                       visibility: `${searchResultDisplay}`,
-                      height: Math.imul(62, 3) + 58,
-                      marginTop: '3%',
+                      height: searchResultDisplay === 'visible' ? Math.imul(62, 2) + 58 : 0,
+
+                      marginTop: '1%',
                     }}
                   >
                     <DataGrid
@@ -458,11 +461,11 @@ export default function PlaylistPage() {
                       }}
                       rowHeight={62}
                       hideFooter
+                      headerHeight={30}
                       disableSelectionOnClick
                     />
                   </div>
                 </div>
-
                 <Button
                   variant="outlined"
                   size="small"
