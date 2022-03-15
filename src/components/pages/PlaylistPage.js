@@ -1,29 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-	Alert,
-	Avatar,
-	Box,
+  Alert,
+  Avatar,
+  Box,
   Button,
-	IconButton,
-	Modal,
-	Snackbar,
-	Stack,
-	TextField,
-	Typography,
-} from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import Cookies from "js-cookie";
-import { SpotifyAuthListener } from "react-spotify-auth";
-import SpotifyWebApi from "spotify-web-api-node";
+  IconButton,
+  Modal,
+  Snackbar,
+  Stack,
+  TextField,
+  Typography,
+  styled,
+} from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
+import Cookies from 'js-cookie';
+import { SpotifyAuthListener } from 'react-spotify-auth';
+import SpotifyWebApi from 'spotify-web-api-node';
 
-import ICard from "../ItemCard";
-import { ColorButton } from "../Button";
-import GeneralPage from "./GeneralPage";
-import CircleLoader from "../Loader";
+import ICard from '../ItemCard';
+import { ColorButton } from '../Button';
+import GeneralPage from './GeneralPage';
+import CircleLoader from '../Loader';
 import PlayListGenerator_simple from '../PlaylistGen';
 import { timeToMs } from '../timeToMs';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { PlaylistColumns, AddTrackColumns, searchFieldStyling } from './Constants';
+
 const columns = [
   {
     field: 'id',
@@ -54,41 +57,7 @@ const columns = [
     justifyContent: 'left',
     editable: false,
   },
-  {
-    field: 'artist',
-    headerName: 'Artist',
-    flex: 0.6,
-    editable: false,
-  },
-  {
-    field: 'album',
-    headerName: 'Album',
-    flex: 0.7,
-    editable: false,
-  },
-  {
-    field: 'duration',
-    headerName: 'Track Length',
-
-    align: 'center',
-    valueFormatter: (params) => {
-      let milli = params.value;
-      let seconds = ((milli % 60000) / 1000).toFixed(0);
-      let minutes = Math.floor(milli / 60000);
-      let hours = Math.floor(minutes / 60);
-
-      if (hours > 0) minutes = minutes % 60;
-
-      var finalSecond = seconds < 10 ? `0${seconds}` : `${seconds}`;
-      var finalMinute = minutes < 10 ? `0${minutes}:` : `${minutes}:`;
-      let finalHour = hours < 10 ? (hours === 0 ? '' : `0${hours}:`) : `${hours}:`;
-
-      return finalHour + finalMinute + finalSecond;
-    },
-    flex: 0.3,
-    editable: false,
-    hideable: true,
-  },
+  ...PlaylistColumns,
 ];
 
 export default function PlaylistPage() {
@@ -121,77 +90,6 @@ export default function PlaylistPage() {
   let spotifyApi = new SpotifyWebApi({
     accessToken: token,
   });
-
-  const addTrackColumns = [
-    {
-      field: 'id',
-      headerName: 'Track #',
-      align: 'center',
-      width: 100,
-      editable: false,
-      hide: true,
-    },
-    {
-      field: 'title',
-      headerName: 'Title',
-      renderCell: function (params) {
-        return (
-          <>
-            <IconButton onClick={() => handlePlusClick(params)}>
-              <AddCircleOutlineOutlinedIcon sx={{ color: 'white' }} />
-            </IconButton>
-            <Avatar
-              src={params.value.art}
-              variant="square"
-              sx={{ width: 45, height: 45, paddingLeft: 0.4 }}
-            ></Avatar>
-            <span display="inline" style={{ marginInlineStart: '25px' }}>
-              {params.value.track}
-            </span>
-          </>
-        );
-      },
-      flex: 1,
-      justifyContent: 'left',
-      editable: false,
-    },
-    {
-      field: 'artist',
-      headerName: 'Artist',
-      flex: 0.5,
-      editable: false,
-    },
-    {
-      field: 'album',
-      headerName: 'Album',
-      flex: 0.6,
-      editable: false,
-    },
-    {
-      field: 'duration',
-      headerName: 'Track Length',
-
-      align: 'center',
-      valueFormatter: (params) => {
-        let milli = params.value;
-        let seconds = ((milli % 60000) / 1000).toFixed(0);
-        let minutes = Math.floor(milli / 60000);
-        let hours = Math.floor(minutes / 60);
-
-        if (hours > 0) minutes = minutes % 60;
-
-        var finalSecond = seconds < 10 ? `0${seconds}` : `${seconds}`;
-        var finalMinute = minutes < 10 ? `0${minutes}:` : `${minutes}:`;
-        let finalHour = hours < 10 ? (hours === 0 ? '' : `0${hours}:`) : `${hours}:`;
-
-        return finalHour + finalMinute + finalSecond;
-      },
-      //width: 150,
-      flex: 0.2,
-      editable: false,
-      hideable: true,
-    },
-  ];
 
   const tokenHandler = (token) => {
     setToken(token);
@@ -255,7 +153,7 @@ export default function PlaylistPage() {
     rows.forEach((item) => currPlaylistRows.push(item));
 
     // Get song object to add
-    let songToAdd = currSearchRows.find((el) => el.title.trackId == params.value.trackId);
+    let songToAdd = currSearchRows.find((el) => el.title.trackId === params.value.trackId);
     console.log(songToAdd);
 
     // Remove song from results
@@ -270,6 +168,42 @@ export default function PlaylistPage() {
     console.log(currPlaylistRows);
     setRows(currPlaylistRows);
   };
+
+  const addTrackColumns = [
+    {
+      field: 'id',
+      headerName: 'Track #',
+      align: 'center',
+      width: 100,
+      editable: false,
+      hide: true,
+    },
+    {
+      field: 'title',
+      headerName: 'Title',
+      renderCell: function (params) {
+        return (
+          <>
+            <IconButton onClick={() => handlePlusClick(params)}>
+              <AddCircleOutlineOutlinedIcon sx={{ color: 'white' }} />
+            </IconButton>
+            <Avatar
+              src={params.value.art}
+              variant="square"
+              sx={{ width: 45, height: 45, paddingLeft: 0.4 }}
+            ></Avatar>
+            <span display="inline" style={{ marginInlineStart: '25px' }}>
+              {params.value.track}
+            </span>
+          </>
+        );
+      },
+      flex: 1,
+      justifyContent: 'left',
+      editable: false,
+    },
+    ...AddTrackColumns,
+  ];
 
   /*********************************** EXECUTE SEARCH FOR TRACKS ******************************************/
 
@@ -483,7 +417,8 @@ export default function PlaylistPage() {
                 <div
                   style={{
                     display: `${searchFieldVis}`,
-                    height: 'fit-content',
+                    height: 'auto',
+                    overflow: 'visible',
                     maxHeight: '80vh',
                     width: '60vw',
                     backgroundColor: '#181818',
@@ -500,60 +435,13 @@ export default function PlaylistPage() {
                     onChange={handleSearchFieldChange}
                     onAbort={handleSearchAbort}
                     sx={{
-                      marginBottom: '0px',
-                      marginTop: '2vh',
-
-                      '& label.Mui-focused': {
-                        color: '#1DB954',
-                        backgroundColor: 'none',
-                        '& fieldset': {
-                          color: '#1DB954',
-                        },
-                      },
-
-                      '& label': {
-                        color: '#afbacc',
-                      },
-
-                      '& .MuiInput-underline:after': {
-                        borderBottomColor: '#1DB954',
-                        backgroundColor: 'none',
-                        color: 'white',
-                      },
-
-                      '& .MuiOutlinedInput-root': {
-                        color: 'white',
-                        label: 'white',
-                        '& fieldset': {
-                          borderColor: 'white',
-                          backgroundColor: 'none',
-                          color: 'white',
-                        },
-
-                        '&:hover fieldset': {
-                          borderColor: '#afbacc',
-                          backgroundColor: 'none',
-                          color: 'white',
-                        },
-
-                        '&.Mui-focused fieldset': {
-                          borderColor: '#1DB954',
-                          backgroundColor: 'none',
-                          color: 'white',
-                        },
-
-                        '&.Mui-focused': {
-                          borderColor: '#1DB954',
-                          backgroundColor: 'none',
-                          color: 'white',
-                        },
-                      },
+                      ...searchFieldStyling,
                     }}
                   />
                   <div
                     style={{
                       visibility: `${searchResultDisplay}`,
-                      height: Math.imul(62, 3) + 58,
+                      height: 'auto',
                       marginTop: '3%',
                     }}
                   >
