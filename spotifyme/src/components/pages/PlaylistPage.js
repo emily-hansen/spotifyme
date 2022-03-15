@@ -21,15 +21,8 @@ import ICard from "../ItemCard";
 import { ColorButton } from "../Button";
 import GeneralPage from "./GeneralPage";
 import CircleLoader from "../Loader";
-import PlayListGenerator_simple from "../PlaylistGen";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import PlayListGenerator_simple from '../PlaylistGen';
 import { timeToMs } from '../timeToMs';
-import { spotifyGreen, spotifyGreenDark } from "../Button";
-import { color, styled } from "@mui/system";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 const columns = [
   {
@@ -46,7 +39,11 @@ const columns = [
     renderCell: function (params) {
       return (
         <>
-          <Avatar src={params.value.art} variant="square" sx={{ width: 45, height: 45, paddingLeft: .4}}></Avatar>
+          <Avatar
+            src={params.value.art}
+            variant="square"
+            sx={{ width: 45, height: 45, paddingLeft: 0.4 }}
+          ></Avatar>
           <span display="inline" style={{ marginInlineStart: '25px' }}>
             {params.value.track}
           </span>
@@ -60,21 +57,19 @@ const columns = [
   {
     field: 'artist',
     headerName: 'Artist',
-    flex: .6,
-    //width: 325,
+    flex: 0.6,
     editable: false,
   },
   {
     field: 'album',
     headerName: 'Album',
-    flex: .7,
-    //width: 350,
+    flex: 0.7,
     editable: false,
   },
   {
     field: 'duration',
     headerName: 'Track Length',
-    
+
     align: 'center',
     valueFormatter: (params) => {
       let milli = params.value;
@@ -90,13 +85,11 @@ const columns = [
 
       return finalHour + finalMinute + finalSecond;
     },
-    //width: 150,
-    flex: .3,
+    flex: 0.3,
     editable: false,
     hideable: true,
   },
 ];
-
 
 export default function PlaylistPage() {
   const navigator = useNavigate();
@@ -107,7 +100,7 @@ export default function PlaylistPage() {
   const [playlistSaved, setPlaylistSaved] = useState(false);
   const [info, setInfo] = useState(['', '']);
 
-  const [searchFieldVal, setSearchFieldVal] = useState("");
+  const [searchFieldVal, setSearchFieldVal] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [searchResultDisplay, setSearchResultDisplay] = useState('hidden');
   const [searchLoading, setSearchLoading] = useState(true);
@@ -117,49 +110,17 @@ export default function PlaylistPage() {
   const [cancelButtonColor, setCancelButtonColor] = useState('#1DB954');
   const [addButtonColor, setAddButtonColor] = useState('#1DB954');
 
-
-
   const [addSongButtonText, setAddSongButtonText] = useState('white');
   const [addSongButtonVis, setAddSongButtonVis] = useState('block');
   const [searchButtonVis, setSearchButtonVis] = useState('none');
   const [cancelButtonVis, setCancelButtonVis] = useState('none');
-  const [addButtonVis, setAddButtonVis] = useState('none');
 
   const [searchFieldVis, setSearchFieldVis] = useState('none');
-
-
-// ATTEMPTING THROTTLE
-
-
-  // const inputRef = useRef()
-  // const throttling = useRef(false)
-
-  // const handleThrottleSearch = (event) => {
-  //   setSearchFieldVal(event.target.value);
-
-  //   if (throttling.current) {
-  //     return
-  //   }
-  //     // if there is no search term, do not make the API call
-  //   if (!inputRef.current.value.trim()) {
-  //     setSearchResults([])
-  //     return
-  //   }
-
-  //   throttling.current = true
-  //   setTimeout(() => {
-  //     throttling.current = false
-  //     executeSearch()
-  //   }, 600)
-  // }
-
- 
 
   let addSongModalHeight = `${Math.imul(searchResults.length, 62)}`;
   let spotifyApi = new SpotifyWebApi({
     accessToken: token,
   });
-
 
   const addTrackColumns = [
     {
@@ -177,9 +138,13 @@ export default function PlaylistPage() {
         return (
           <>
             <IconButton onClick={() => handlePlusClick(params)}>
-              <AddCircleOutlineOutlinedIcon sx={{color: 'white'}}/>
+              <AddCircleOutlineOutlinedIcon sx={{ color: 'white' }} />
             </IconButton>
-            <Avatar src={params.value.art} variant="square" sx={{ width: 45, height: 45, paddingLeft: .4}}></Avatar>
+            <Avatar
+              src={params.value.art}
+              variant="square"
+              sx={{ width: 45, height: 45, paddingLeft: 0.4 }}
+            ></Avatar>
             <span display="inline" style={{ marginInlineStart: '25px' }}>
               {params.value.track}
             </span>
@@ -189,48 +154,44 @@ export default function PlaylistPage() {
       flex: 1,
       justifyContent: 'left',
       editable: false,
-  
     },
     {
       field: 'artist',
       headerName: 'Artist',
-      flex: .5,
-      //width: 325,
+      flex: 0.5,
       editable: false,
     },
     {
       field: 'album',
       headerName: 'Album',
-      flex: .6,
-      //width: 350,
+      flex: 0.6,
       editable: false,
     },
     {
       field: 'duration',
       headerName: 'Track Length',
-      
+
       align: 'center',
       valueFormatter: (params) => {
         let milli = params.value;
         let seconds = ((milli % 60000) / 1000).toFixed(0);
         let minutes = Math.floor(milli / 60000);
         let hours = Math.floor(minutes / 60);
-  
+
         if (hours > 0) minutes = minutes % 60;
-  
+
         var finalSecond = seconds < 10 ? `0${seconds}` : `${seconds}`;
         var finalMinute = minutes < 10 ? `0${minutes}:` : `${minutes}:`;
         let finalHour = hours < 10 ? (hours === 0 ? '' : `0${hours}:`) : `${hours}:`;
-  
+
         return finalHour + finalMinute + finalSecond;
       },
       //width: 150,
-      flex: .2,
+      flex: 0.2,
       editable: false,
       hideable: true,
     },
   ];
-
 
   const tokenHandler = (token) => {
     setToken(token);
@@ -238,15 +199,13 @@ export default function PlaylistPage() {
 
   const handleSearchFieldChange = (event) => {
     setSearchFieldVal(event.target.value);
-  }
+  };
 
   const handleSearchResultDisplay = () => {
     setSearchResultDisplay('block');
-  }
-
+  };
 
   const handleMouseEnterSongButton = () => {
-
     setAddSongButtonText('#1DB954');
     setAddSongButtonColor('#178E41');
   };
@@ -254,73 +213,70 @@ export default function PlaylistPage() {
   const handleMouseExitSongButton = () => {
     setAddSongButtonColor('#1DB954');
     setAddSongButtonText('white');
-  }
+  };
 
   const handleMouseEnterSearchButton = () => {
     setSearchButtonColor('#178E41');
-    //setSearchButtonText('#1DB954')
-  }
+  };
 
   const handleMouseExitSearchButton = () => {
     setSearchButtonColor('#1DB954');
-  }
+  };
 
   const handleMouseEnterCancelButton = () => {
     setCancelButtonColor('#178E41');
-    //setSearchButtonText('#1DB954')
-  }
+  };
 
   const handleMouseExitCancelButton = () => {
     setCancelButtonColor('#1DB954');
-  }
+  };
 
   const handleAddButtonClick = () => {
-    setAddSongButtonVis('none');  // hide Add Song button
-    setSearchFieldVis('block');   // display Search Field
+    setAddSongButtonVis('none'); // hide Add Song button
+    setSearchFieldVis('block'); // display Search Field
     setSearchButtonVis('inline'); // Display Search Button
     setCancelButtonVis('inline'); // Display Cancel Button
-  }
+  };
   const handleCancelButtonClick = () => {
     setAddSongButtonVis('block');
     setSearchFieldVis('none');
-    setSearchFieldVal("");
-    setSearchButtonVis('none')
-    setCancelButtonVis('none')
-    setSearchFieldVal("");
+    setSearchFieldVal('');
+    setSearchButtonVis('none');
+    setCancelButtonVis('none');
+    setSearchFieldVal('');
     setSearchResults([]);
-  }
+  };
 
   const handleSearchAbort = () => {
-    setSearchFieldVal("")
-    setSearchResults([])
-  }
+    setSearchFieldVal('');
+    setSearchResults([]);
+  };
 
   const handleSearchDisplay = () => {
     setSearchResultDisplay('block');
-  }
+  };
 
   const handleMouseEnterAdderButton = () => {
     setAddButtonColor('#178E41');
-  }
+  };
 
   const handleMouseExitAdderButton = () => {
     setAddButtonColor('#1DB954');
-  }
+  };
 
   const handlePlusClick = (params) => {
-
-    console.log(params.value.trackId)
+    console.log(params.value.trackId);
     let currSearchRows = searchResults;
     let currPlaylistRows = [];
-    rows.forEach(item => currPlaylistRows.push(item))
+    rows.forEach((item) => currPlaylistRows.push(item));
 
     // Get song object to add
-    let songToAdd = currSearchRows.find(el => el.title.trackId == params.value.trackId)
+    let songToAdd = currSearchRows.find((el) => el.title.trackId == params.value.trackId);
     console.log(songToAdd);
 
     // Remove song from results
-    let res = currSearchRows.filter(item => item !== songToAdd)
-    console.log(res)
+    let res = currSearchRows.filter((item) => item !== songToAdd);
+    console.log(res);
 
     // set updated result list
     setSearchResults(res);
@@ -329,14 +285,12 @@ export default function PlaylistPage() {
     currPlaylistRows.push(songToAdd);
     console.log(currPlaylistRows);
     setRows(currPlaylistRows);
-  }
+  };
 
-  /*********************************** GET TRACKS ******************************************/
-
+  /*********************************** EXECUTE SEARCH FOR TRACKS ******************************************/
 
   const executeSearch = () => {
-
-    spotifyApi.searchTracks(`${searchFieldVal}`, {limit: 10}, function (err, data) {
+    spotifyApi.searchTracks(`${searchFieldVal}`, { limit: 10 }, function (err, data) {
       if (err) {
         console.error('Error occurred while searching for tracks');
       } else {
@@ -349,30 +303,24 @@ export default function PlaylistPage() {
 
           let artist = value.artists[0].name;
 
-          
           let album = value.album.name;
           let duration = value.duration_ms;
 
           response.push({
             id: index + 1,
-            title: { art: trackArt, track: trackName, trackId: id},
+            title: { art: trackArt, track: trackName, trackId: id },
             artist: artist,
             album: album,
             duration: duration,
           });
         });
-        //console.log(response);
         setSearchResults(response);
-
-        
       }
-    })
+    });
 
     setTimeout(setSearchResultDisplay('visible'), 1000);
-    //setTimeout(console.log(searchResults), 1000);
     setTimeout(setSearchLoading(false), 1000);
-    //console.log(searchResults);
-  }
+  };
 
   /*********************************** GET TRACKS ******************************************/
 
@@ -461,8 +409,6 @@ export default function PlaylistPage() {
 
   /********************************************************************************************/
 
-  
-
   useEffect(getTracks, []);
   return (
     <>
@@ -514,205 +460,176 @@ export default function PlaylistPage() {
                       rowHeight={62}
                       hideFooter
                       disableSelectionOnClick
-                      
                     />
                   ) : (
                     <CircleLoader />
                   )}
                 </div>
-
               </Stack>
-
 
               <Box
                 sx={{
                   position: 'relative',
-                  width: '60vw' ,
+                  width: '60vw',
                   height: `${addSongModalHeight}`,
                   backgroundColor: 'none',
                   marginTop: '18px',
                   paddingLeft: '6%',
                 }}
               >
-                <Button 
-                style={{ width: '150px', 
-                          color: `${addSongButtonText}`, 
-                          borderColor: `${addSongButtonColor}`, 
-                          textTransform: 'capitalize',
-                          display: `${addSongButtonVis} `,
-                          accentColor: 'white',
-                          marginTop: '2vh',
-                        }} 
-                variant='outlined' 
-                color="primary" 
-                onMouseEnter={handleMouseEnterSongButton} 
-                onMouseOut={handleMouseExitSongButton} 
-                size='small' 
-                onClick={handleAddButtonClick}
+                <Button
+                  style={{
+                    width: '150px',
+                    color: `${addSongButtonText}`,
+                    borderColor: `${addSongButtonColor}`,
+                    textTransform: 'capitalize',
+                    display: `${addSongButtonVis} `,
+                    accentColor: 'white',
+                    marginTop: '2vh',
+                  }}
+                  variant="outlined"
+                  color="primary"
+                  onMouseEnter={handleMouseEnterSongButton}
+                  onMouseOut={handleMouseExitSongButton}
+                  size="small"
+                  onClick={handleAddButtonClick}
                 >
                   Add Songs
-                  </Button>
-                
-                
-              
+                </Button>
+
                 <div
                   style={{
                     display: `${searchFieldVis}`,
                     height: 'fit-content',
                     maxHeight: '80vh',
                     width: '60vw',
-                    backgroundColor: '#181818'
-                  }}>
+                    backgroundColor: '#181818',
+                  }}
+                >
+                  <TextField
+                    id="searchfield"
+                    label="Find track..."
+                    value={searchFieldVal}
+                    type="search"
+                    size="small"
+                    variant="outlined"
+                    fullWidth={true}
+                    onChange={handleSearchFieldChange}
+                    onAbort={handleSearchAbort}
+                    sx={{
+                      marginBottom: '0px',
+                      marginTop: '2vh',
 
-                    <TextField 
-                    
-                      id="searchfield" 
-                      label="Find track..." 
-                      value={searchFieldVal} 
-                      type="search" 
-                      size="small" 
-                      variant='outlined'
-                      fullWidth={true}
-                      onChange={handleSearchFieldChange}
-                      onAbort={handleSearchAbort}
-                      //ref={inputRef}
-                      //onChange={handleThrottleSearch}
-                      sx={{
-
-                        marginBottom: '0px',
-                        marginTop: '2vh',
-
-                        '& label.Mui-focused': {
+                      '& label.Mui-focused': {
+                        color: '#1DB954',
+                        backgroundColor: 'none',
+                        '& fieldset': {
                           color: '#1DB954',
-                          backgroundColor: 'none',
-                          '& fieldset': {
-                            color: '#1DB954',
-                          }
-                    
                         },
+                      },
 
-                        '& label': {
-                          color: '#afbacc',
-                        },
+                      '& label': {
+                        color: '#afbacc',
+                      },
 
-                    
-                        '& .MuiInput-underline:after': {
-                          borderBottomColor: '#1DB954',
+                      '& .MuiInput-underline:after': {
+                        borderBottomColor: '#1DB954',
+                        backgroundColor: 'none',
+                        color: 'white',
+                      },
+
+                      '& .MuiOutlinedInput-root': {
+                        color: 'white',
+                        label: 'white',
+                        '& fieldset': {
+                          borderColor: 'white',
                           backgroundColor: 'none',
                           color: 'white',
-                    
                         },
 
-
-                        '& .MuiOutlinedInput-root': {
+                        '&:hover fieldset': {
+                          borderColor: '#afbacc',
+                          backgroundColor: 'none',
                           color: 'white',
-                          label: 'white',
-                          '& fieldset': {
-                            borderColor: 'white',
-                            backgroundColor: 'none',
-                            color: 'white',
-                    
-                          },
-
-                          '&:hover fieldset': {
-                            borderColor: '#afbacc',
-                            backgroundColor: 'none',
-                            color: 'white',
-                          },
-
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#1DB954',
-                            backgroundColor: 'none',
-                            color: 'white',
-                          },
-
-                          '&.Mui-focused': {
-                            borderColor: '#1DB954',
-                            backgroundColor: 'none',
-                            color: 'white',
-                          },
-                          
                         },
-                      }}
-                    />
-                    <div
-                    style={{visibility: `${searchResultDisplay}`, height: Math.imul(62, 3) + 58, marginTop: '3%'}}
-                    >
+
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#1DB954',
+                          backgroundColor: 'none',
+                          color: 'white',
+                        },
+
+                        '&.Mui-focused': {
+                          borderColor: '#1DB954',
+                          backgroundColor: 'none',
+                          color: 'white',
+                        },
+                      },
+                    }}
+                  />
+                  <div
+                    style={{
+                      visibility: `${searchResultDisplay}`,
+                      height: Math.imul(62, 3) + 58,
+                      marginTop: '3%',
+                    }}
+                  >
                     <DataGrid
-                          rows={searchResults}
-                          //checkboxSelection
-                          loading={searchLoading}
-                          columns={addTrackColumns}
-                          pageSize={10}
-                          rowsPerPageOptions={[3]}
-                          sx={{ backgroundColor: '#181818', accentColor: '#181818', color: 'white', margin: '5px'}}
-                          rowHeight={62}
-                          hideFooter
-                          
-                          disableSelectionOnClick
-                          
-                          // onSelectionModelChange={(ids) => {
-                          //   const selectedIDs = new Set(ids);
-                          //   const selectedRowData = searchResults.filter((row) => 
-                          //   selectedIDs.has(row.id)
-                          //   );
-                          //   setSongsToAdd(selectedRowData);
-                            //console.log(selectedRowData)
-                            //console.log(songsToAdd)
-                            
-
-                          //}}
-                          
-                        />
-                    </div>
-                    
-                  
+                      rows={searchResults}
+                      loading={searchLoading}
+                      columns={addTrackColumns}
+                      pageSize={10}
+                      rowsPerPageOptions={[3]}
+                      sx={{
+                        backgroundColor: '#181818',
+                        accentColor: '#181818',
+                        color: 'white',
+                        margin: '5px',
+                      }}
+                      rowHeight={62}
+                      hideFooter
+                      disableSelectionOnClick
+                    />
                   </div>
-                 
-                  <Button 
-                          variant='outlined' 
-                          size="small" 
-                          sx={{color: 'white', borderColor: 'white', outlineColor: 'white'}}
-                          onClick={executeSearch}
-                          style={{ width: '150px', 
-                          color: `${searchButtonColor}`, 
-                          borderColor: `${searchButtonColor}`, 
-                          textTransform: 'capitalize',
-                          accentColor: 'white',
-                          display:  `${searchFieldVis}`,
-                          }} 
-                          onMouseEnter={handleMouseEnterSearchButton} 
-                          onMouseOut={handleMouseExitSearchButton}
+                </div>
 
-                        >
-                          Search
-                        </Button>
-                        <Button
-                          variant='outlined' 
-                          size="small" 
-                          sx={{color: 'white', borderColor: 'white', outlineColor: 'white'}}
-                          style={{ width: '150px', 
-                          color: `${cancelButtonColor}`, 
-                          borderColor: `${cancelButtonColor}`, 
-                          textTransform: 'capitalize',
-                          accentColor: 'white',
-                          display:  `${searchFieldVis}`,
-                          }} 
-                          onMouseEnter={handleMouseEnterCancelButton} 
-                          onMouseOut={handleMouseExitCancelButton}
-                          onClick={handleCancelButtonClick}
-                      
-                        >
-                          Cancel
-                        </Button>
-
-                        
-                  
-                  
-                  
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ color: 'white', borderColor: 'white', outlineColor: 'white' }}
+                  onClick={executeSearch}
+                  style={{
+                    width: '150px',
+                    color: `${searchButtonColor}`,
+                    borderColor: `${searchButtonColor}`,
+                    textTransform: 'capitalize',
+                    accentColor: 'white',
+                    display: `${searchFieldVis}`,
+                  }}
+                  onMouseEnter={handleMouseEnterSearchButton}
+                  onMouseOut={handleMouseExitSearchButton}
+                >
+                  Search
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ color: 'white', borderColor: 'white', outlineColor: 'white' }}
+                  style={{
+                    width: '150px',
+                    color: `${cancelButtonColor}`,
+                    borderColor: `${cancelButtonColor}`,
+                    textTransform: 'capitalize',
+                    accentColor: 'white',
+                    display: `${searchFieldVis}`,
+                  }}
+                  onMouseEnter={handleMouseEnterCancelButton}
+                  onMouseOut={handleMouseExitCancelButton}
+                  onClick={handleCancelButtonClick}
+                >
+                  Cancel
+                </Button>
               </Box>
-
-              
             </ICard>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
               <ColorButton style={{ width: '150px' }} onClick={() => navigator('/TimePage')}>
@@ -727,29 +644,10 @@ export default function PlaylistPage() {
               <ColorButton style={{ width: '150px' }} onClick={() => getTracks()}>
                 Regenerate Playlist
               </ColorButton>
-              
             </Stack>
           </Stack>
         </div>
       </GeneralPage>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       <Modal
         open={savedPlaylist[1]}
