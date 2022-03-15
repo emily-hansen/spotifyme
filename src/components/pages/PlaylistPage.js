@@ -236,7 +236,7 @@ export default function PlaylistPage() {
       }
     });
 
-    setTimeout(setSearchResultDisplay('visible'), 1000);
+    setTimeout(setSearchResultDisplay('visible'), 6000);
     setTimeout(setSearchLoading(false), 1000);
   };
 
@@ -417,8 +417,7 @@ export default function PlaylistPage() {
                 <div
                   style={{
                     display: `${searchFieldVis}`,
-                    height: 'auto',
-                    overflow: 'visible',
+                    height: 'fit-content',
                     maxHeight: '80vh',
                     width: '60vw',
                     backgroundColor: '#181818',
@@ -441,7 +440,7 @@ export default function PlaylistPage() {
                   <div
                     style={{
                       visibility: `${searchResultDisplay}`,
-                      height: 'auto',
+                      height: Math.imul(62, 3) + 58,
                       marginTop: '3%',
                     }}
                   >
