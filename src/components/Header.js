@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Stack } from "@mui/material";
-import { ColorButton, spotifyGreen, spotifyGreenDark } from "./Button";
+import { ColorButton, spotifyGreen } from "./Button";
 import Cookies from "js-cookie";
 import SpotifyWebApi from "spotify-web-api-node";
 import CircleLoader from "./Loader";
@@ -9,9 +9,10 @@ import CircleLoader from "./Loader";
 export default function Header(props) {
 	const navigator = useNavigate();
 	// Values that have an easily-readable value are best to store as a cookie for now
-	const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
+	const [token] = useState(Cookies.get("spotifyAuthToken"));
 	const [userName, setUserName] = useState(Cookies.get("currUser"));
 	const [avatar, setAvatar] = useState(Cookies.get("avatarLink"));
+
 	const [loading, setLoading] = useState(false);
 
 	let spotifyApi = useMemo(() => {
@@ -100,9 +101,6 @@ export default function Header(props) {
 						src={avatar}
 						style={{
 							backgroundColor: `${spotifyGreen}`,
-							"&:hover": {
-								backgroundColor: `${spotifyGreenDark}`,
-							}, // need to change so hover animation works
 						}}></Avatar>
 				) : (
 					<CircleLoader />

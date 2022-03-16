@@ -81,22 +81,21 @@ export default function FeaturePage() {
 		JSON.parse(localStorage.getItem("features")) || []
 	);
 
-	let featureArray = [];
+	const featureArray = useRef([]);
 
 	const didFeaturesMount = useRef(false);
 
 	useEffect(() => {
 		if (didFeaturesMount.current) {
-			featureArray = [].concat(
+			featureArray.current = [].concat(
 				valFeature,
 				focusFeature,
 				tempoFeature,
 				features
 			);
-			featureArray = featureArray.filter(function (element) {
+			featureArray.current = featureArray.current.filter(function (element) {
 				return element !== null;
 			});
-			console.log(featureArray);
 		} else {
 			didFeaturesMount.current = true;
 		}
@@ -156,7 +155,7 @@ export default function FeaturePage() {
 										localStorage.setItem("focus", focusFeature);
 										localStorage.setItem("features", JSON.stringify(features));
 										navigator("/featureplaylist", {
-											state: { featureData: featureArray },
+											state: { featureData: featureArray.current },
 										});
 									}
 								}}
@@ -345,7 +344,7 @@ export default function FeaturePage() {
 						localStorage.setItem("focus", focusFeature);
 						localStorage.setItem("features", JSON.stringify(features));
 						navigator("/featureplaylist", {
-							state: { featureData: featureArray },
+							state: { featureData: featureArray.current },
 						});
 					}}>
 					Create Playlist

@@ -1,9 +1,11 @@
 import { Button, styled } from "@mui/material";
 
+// Standard Spotify colors
 export const spotifyGreen = "#1DB954";
 export const spotifyGreenDark = "#178E41";
 
-export const ColorButton = styled(Button)(({ theme }) => ({
+// Default button style
+export const ColorButton = styled(Button)(() => ({
 	color: "#fff",
 	backgroundColor: spotifyGreen,
 	borderRadius: "10px",

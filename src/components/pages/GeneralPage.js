@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../Header";
 import Background from "../Background";
 
+// General page component
 export default function GeneralPage(props) {
 	return (
 		<Background style={props.style}>

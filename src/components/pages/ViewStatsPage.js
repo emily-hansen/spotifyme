@@ -114,7 +114,6 @@ export default function PlaylistPage() {
 	let [artistRows, setArtistRows] = useState([]);
 
 	const tokenHandler = (token) => {
-		console.log(token);
 		setToken(token);
 	};
 
@@ -129,7 +128,6 @@ export default function PlaylistPage() {
 				if (err) {
 					console.error("Something went wrong!");
 				} else {
-					console.log(data.body.items);
 					let response = [];
 
 					data.body.items.forEach(function (value, index) {
@@ -159,7 +157,6 @@ export default function PlaylistPage() {
 				if (err) {
 					console.error("Something went wrong!");
 				} else {
-					console.log(data.body.items);
 					let response = [];
 
 					data.body.items.forEach(function (value, index) {
@@ -177,7 +174,6 @@ export default function PlaylistPage() {
 			}
 		);
 
-		console.log(artistRows);
 		return artistRows;
 	};
 

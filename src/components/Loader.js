@@ -1,6 +1,7 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
+// Loader component
 export default function CircleLoader() {
 	return (
 		<Box sx={{ display: "flex" }}>
